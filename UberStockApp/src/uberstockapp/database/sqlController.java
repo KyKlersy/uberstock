@@ -23,8 +23,6 @@ static final String JDBC_DRIVER = "org.hsqldb.jdbc.JDBCDriver";
     static final String USER = "SA";
     static final String PASS = "";
     
-    private Connection connection = null;
-    private Statement stmt = null;
 
     public sqlController() 
     {
@@ -47,9 +45,9 @@ static final String JDBC_DRIVER = "org.hsqldb.jdbc.JDBCDriver";
 
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
 
-            connection = DriverManager.getConnection(DB_URI, USER, PASS);
+            Connection connection = DriverManager.getConnection(DB_URI, USER, PASS);
             
-            stmt = connection.createStatement();
+            Statement stmt = connection.createStatement();
             String sqlCommand;
             System.out.println("Pass sql " + query);
                    

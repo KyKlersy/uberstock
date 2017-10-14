@@ -1,11 +1,10 @@
 /*comment*/
-DROP TABLE Test IF EXISTS;
-DROP TABLE Users IF EXISTS;
 DROP TABLE MembershipType IF EXISTS;
 DROP TABLE PayPal IF EXISTS;
 DROP TABLE PurchaseHistory IF EXISTS;
-DROP TABLE ProductType IF EXISTS;
 DROP TABLE InventoryItems IF EXISTS;
+DROP TABLE ProductType IF EXISTS;
+DROP TABLE Users IF EXISTS;
 
 CREATE TABLE Users(
 UserID IDENTITY,
@@ -54,6 +53,10 @@ ProductGroupName varchar(80),
 PRIMARY KEY(ProductCatagory)
 );
 
+INSERT INTO ProductType(ProductCatagory, ProductGroupName)
+VALUES(NULL,'Tables'),(NULL,'Chairs');
+
+
 CREATE TABLE InventoryItems(
 ItemID IDENTITY,
 ItemName varchar(150),
@@ -64,3 +67,7 @@ ItemImageURI varchar(80),
 PRIMARY KEY(ItemID),
 FOREIGN KEY(ItemCatagory) REFERENCES ProductType(ProductCatagory)
 );
+
+INSERT INTO InventoryItems(ItemID, ItemName, ItemCatagory, ItemPrice, ItemStock, ItemImageURI)
+VALUES(NULL, 'Short Bar Chair', 1, 19.25, 5, 'shortbarchair.png'),
+(NULL, 'Round End Table', 0, 15.99, 3, 'roundendtable.png');

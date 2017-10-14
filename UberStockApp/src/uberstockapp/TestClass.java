@@ -65,14 +65,14 @@ public class TestClass {
         {
             sqlController sql = (sqlController)ServiceLocator.getServiceLocatorInstance().getService("sqlController");
 
-            setResults(sql.executeQuery(executeSQL()));
+            setResults(sql.executeQuery(query));
 
         }
         
         @Override
-        public String executeSQL()
+        public void executeSQL()
         {
-            return query;
+           
         }
         
         

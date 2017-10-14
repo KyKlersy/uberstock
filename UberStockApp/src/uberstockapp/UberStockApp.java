@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package uberstockapp;
+import gui.UberStockGuiFrame;
+import javax.swing.SwingUtilities;
 import uberstockapp.database.buildDataBaseTables;
 import uberstockapp.database.sqlController;
 /**
@@ -50,12 +52,26 @@ public class UberStockApp {
         /*        second parameter is the class object itself, your classess should be constructed like below with default constructors     */
         /************************************************************************************************************************************/
         serviceLocator.registerService("sqlController", new sqlController());
+        serviceLocator.registerService("ProductManager", new ProductManager());
 
         
 
         /*Ignore for now, test class playing with the idea of how to implement the sql inside classess that need database access*/
         TestClass t = new TestClass();
         t.getMessage();
+        
+        //ProductManager productManager = new ProductManager();
+        //productManager.buildProductList();
+        
+        //productManager.printList();
+        
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run() {
+                new UberStockGuiFrame();
+            }
+        });
         
     }
     

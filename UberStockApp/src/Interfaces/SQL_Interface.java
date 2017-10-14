@@ -13,7 +13,7 @@ import java.sql.ResultSet;
  */
 public interface SQL_Interface {
     
-    public String executeSQL();
+    public void executeSQL();
     
     public void setResults(ResultSet results);
   
