@@ -7,7 +7,9 @@ package gui;
 
 import java.awt.Button;
 import java.awt.CardLayout;
+import java.util.Arrays;
 import javax.swing.JButton;
+import uberstockapp.Login;
 import uberstockapp.Product;
 import uberstockapp.ProductManager;
 import uberstockapp.ServiceLocator;
@@ -20,6 +22,7 @@ import uberstockapp.ServiceLocator;
 public class UberStockGuiFrame extends javax.swing.JFrame {
     
     CardLayout cardLayout = null;
+    ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     /**
      * Creates new form UberStockGuiFrame
      */
@@ -29,7 +32,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         contentView.add(loginPanel, "1");
         contentView.add(storePanel, "2");
 
-        ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
+        
         ProductManager productManager = (ProductManager)serviceLocator.getService("ProductManager");
         
         
@@ -116,8 +119,6 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         loginPanel.add(passwordLbl, gridBagConstraints);
-
-        PasswordField.setText("jPasswordField1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -248,8 +249,26 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
         
-        cardLayout = (CardLayout)contentView.getLayout();
-        cardLayout.show(contentView, "2");
+        Login login = (Login)serviceLocator.getService("Login");
+        login.setLoginUserName(UserNameField.getText());
+        login.setLoginPassword(String.valueOf(PasswordField.getPassword()));
+        
+        System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
+        
+        if(login.tryUserLogin())
+        {
+            UserNameField.setText("");
+            PasswordField.setText("");
+            cardLayout = (CardLayout)contentView.getLayout();
+            cardLayout.show(contentView, "2");
+        }
+        else
+        {
+            System.err.println("Login Failed.");
+        }
+        
+        //cardLayout = (CardLayout)contentView.getLayout();
+        //cardLayout.show(contentView, "2");
         
     }//GEN-LAST:event_loginBtnActionPerformed
 

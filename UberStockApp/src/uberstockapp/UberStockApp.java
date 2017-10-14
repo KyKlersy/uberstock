@@ -53,6 +53,7 @@ public class UberStockApp {
         /************************************************************************************************************************************/
         serviceLocator.registerService("sqlController", new sqlController());
         serviceLocator.registerService("ProductManager", new ProductManager());
+        serviceLocator.registerService("Login", new Login());
 
         
 

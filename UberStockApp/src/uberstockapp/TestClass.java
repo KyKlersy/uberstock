@@ -51,7 +51,7 @@ public class TestClass {
         } 
 
 
-    private final class SQLCommand implements SQL_Interface{
+    private class SQLCommand implements SQL_Interface{
         
         private final String query = "SELECT UserID, Username, Password, Membership, AllowAdmin FROM USERS WHERE UserID = 0";
         private ResultSet resultSet;
