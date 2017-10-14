@@ -41,7 +41,12 @@ public class Login implements SQL_Interface{
             else
             {
                 resultSet.next();
-                System.out.println(resultSet.getInt("UserID"));
+                
+                /*To do write code for handling which user class abstract to register as a service here*/
+                /* ServiceLocator.getServiceLocatorInstance().registerService("User", new "Name of user concrete class"); */
+                
+                
+                System.out.println("UserName" + resultSet.getString("UserName"));
                 return true;
             }
             
