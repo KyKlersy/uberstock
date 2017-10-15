@@ -72,4 +72,37 @@ static final String JDBC_DRIVER = "org.hsqldb.jdbc.JDBCDriver";
         return  null;
     }
     
+    public int executeUpdate(String query) 
+    {
+        try
+        {
+            int insertStatus;
+            Class.forName("org.hsqldb.jdbc.JDBCDriver");
+
+            Connection connection = DriverManager.getConnection(DB_URI, USER, PASS);
+            
+            Statement stmt = connection.createStatement();
+            String sqlCommand;
+            System.out.println("Pass sql " + query);
+                   
+            sqlCommand = query;
+            insertStatus = stmt.executeUpdate(sqlCommand);
+
+            stmt.close();
+            connection.close();
+            
+            return insertStatus;
+            
+        } 
+        catch (SQLException sqle) 
+        {
+            sqle.printStackTrace();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return -1;
+    }
 }
