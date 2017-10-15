@@ -69,5 +69,15 @@ FOREIGN KEY(ItemCatagory) REFERENCES ProductType(ProductCatagory)
 );
 
 INSERT INTO InventoryItems(ItemID, ItemName, ItemCatagory, ItemPrice, ItemStock, ItemImageURI)
-VALUES(NULL, 'Short Bar Chair', 1, 19.25, 5, 'shortbarchair.png'),
-(NULL, 'Round End Table', 0, 15.99, 3, 'roundendtable.png');
+VALUES(NULL, 'Short Bar Chair', 1, 19.25, 5, '200.jpg'),
+(NULL, 'Round End Table', 0, 15.99, 3, '200.jpg'),
+(NULL, 'Square End Table', 0, 15.99, 3, '200.jpg'),
+(NULL, 'Circle End Table', 0, 15.99, 3, '200.jpg'),
+(NULL, 'Octogon End Table', 0, 15.99, 3, '200.jpg'),
+(NULL, 'Trapizode End Table', 0, 15.99, 3, '200.jpg'),
+(NULL, 'Stone End Table', 0, 15.99, 3, '200.jpg'),
+(NULL, 'Wood End Table', 0, 15.99, 3, '200.jpg'),
+(NULL, 'Clay End Table', 0, 15.99, 3, '200.jpg'),
+(NULL, 'Granite End Table', 0, 15.99, 3, '200.jpg'),
+(NULL, 'Marbel End Table', 0, 15.99, 3, '200.jpg'),
+(NULL, 'Maple End Table', 0, 15.99, 3, '200.jpg');
