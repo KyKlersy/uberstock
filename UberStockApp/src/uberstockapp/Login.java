@@ -92,9 +92,12 @@ public class Login implements SQL_Interface{
     
     public boolean insertNewUser()
     {
-        executeSQL("Insert");
+        if(!"".equals(userName) && !"".equals(password))
+            executeSQL("Insert");
         
-        return insertStatus >= 0;
+        return insertStatus > 0;
+        
+        
     }
     
     
