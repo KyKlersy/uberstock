@@ -17,7 +17,7 @@ import uberstockapp.database.sqlController;
 public class ProductManager implements SQL_Interface
 {
     private final String query = "SELECT * FROM INVENTORYITEMS";
-    private ResultSet resultSet = null;
+    private ResultSet resultSet;
     private ArrayList<Product> productList;
 
     public ProductManager() 

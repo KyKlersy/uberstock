@@ -26,3 +26,4 @@ hs_err_pid*
 # Exception Add Back Jar Files Needed #
 !hsqldb.jar
 !sqltool.jar
+/UberStockApp/dist/
