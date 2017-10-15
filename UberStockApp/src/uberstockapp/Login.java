@@ -21,6 +21,7 @@ public class Login implements SQL_Interface{
     private ResultSet resultSet;
     private String userName;
     private String password;
+    private int insertStatus;
     
     public Login()
     {
@@ -30,7 +31,7 @@ public class Login implements SQL_Interface{
     public boolean tryUserLogin()
     {
         
-        executeSQL();
+        executeSQL("Query");
 
         try
         {
@@ -89,6 +90,14 @@ public class Login implements SQL_Interface{
        return false;
     }
     
+    public boolean insertNewUser()
+    {
+        executeSQL("Insert");
+        
+        return insertStatus >= 0;
+    }
+    
+    
     public void setLoginUserName(String UserName)
     {
         this.userName = UserName;
@@ -106,16 +115,22 @@ public class Login implements SQL_Interface{
     public String getPassword() {
         return password;
     }
-    
-    
-
 
     @Override
-    public void executeSQL()
+    public void executeSQL(String commandType)
     {
         sqlController sql = (sqlController)ServiceLocator.getServiceLocatorInstance().getService("sqlController");
-        query = ("SELECT UserID, Username, Password, Membership, AllowAdmin FROM USERS WHERE Username = '" + getUserName() + "' AND Password = '" + getPassword() + "'");
-        setResults(sql.executeQuery(query));
+        
+        if(commandType == "Query")
+        {
+            query = ("SELECT UserID, Username, Password, Membership, AllowAdmin FROM USERS WHERE Username = '" + getUserName() + "' AND Password = '" + getPassword() + "'");
+            setResults(sql.executeQuery(query));
+        }
+        else if(commandType == "Insert")
+        {
+            query = ("INSERT INTO Users(UserID, Username, Password, Membership, AllowAdmin) VALUES(NULL, '" + getUserName() + "','" + getPassword() + "', 1,0)");
+            insertStatus = sql.executeUpdate(query);
+        }
 
     }
 
