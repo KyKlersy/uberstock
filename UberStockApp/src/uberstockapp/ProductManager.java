@@ -31,7 +31,7 @@ public class ProductManager implements SQL_Interface
                 
         try
         {    
-            executeSQL();
+            executeSQL("Query");
             
             while(resultSet.next())
             {
@@ -67,10 +67,14 @@ public class ProductManager implements SQL_Interface
     }
 
     @Override
-    public void executeSQL() 
+    public void executeSQL(String commandType) 
     {
-        sqlController sql = (sqlController)ServiceLocator.getServiceLocatorInstance().getService("sqlController");
-        setResults(sql.executeQuery(query));
+        if(commandType == "Query")
+        {
+            sqlController sql = (sqlController)ServiceLocator.getServiceLocatorInstance().getService("sqlController");
+            setResults(sql.executeQuery(query));
+        }
+
     }
 
     @Override
