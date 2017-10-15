@@ -16,7 +16,7 @@ PRIMARY KEY(UserID)
 );
 
 INSERT INTO Users(UserID, Username, Password, Membership, AllowAdmin)
-VALUES(NULL,'user','user', 1, 0);
+VALUES(NULL,'user','user', 1, 0),(NULL,'admin','admin',2,1);
 
 CREATE TABLE MembershipType(
 MembershipID int NOT NULL,
