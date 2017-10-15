@@ -22,18 +22,36 @@ public class Product {
     public String getName(){
         return this.name;
     }
+    
     public int getCategory(){
         return this.category;
     }
+    
     public void setQuantity(int quantity){
         this.quantity = quantity;
     }
+    
+    public boolean reduceQuantity(int quantity)
+    {
+        if(this.quantity >= quantity)
+        {
+            this.quantity -= quantity;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     public int getQuantity(){
         return this.quantity;
     }
+    
     public float getPrice(){
         return this.price;
     }
+    
     public boolean isAvailable(){
         return getQuantity() != 0;
     }
