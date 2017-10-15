@@ -70,7 +70,7 @@ public class TestClass {
         }
         
         @Override
-        public void executeSQL()
+        public void executeSQL(String commandType)
         {
            
         }
