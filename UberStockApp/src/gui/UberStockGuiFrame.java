@@ -20,9 +20,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import uberstockapp.Category;
+import uberstockapp.CategoryManager;
 import uberstockapp.Login;
 import uberstockapp.Product;
 import uberstockapp.ProductManager;
+import uberstockapp.ProductPreviewController;
+import uberstockapp.ProductViewController;
 import uberstockapp.ServiceLocator;
 import uberstockapp.ShoppingCart;
 
@@ -33,7 +38,8 @@ import uberstockapp.ShoppingCart;
  */
 public class UberStockGuiFrame extends javax.swing.JFrame {
     
-    private HashMap<JButton, Product> productButtonMap;
+    //private HashMap<JButton, Product> productButtonMap;
+    private HashMap<JButton, Category> categoryButtonMap;
     CardLayout cardLayout = null;
     ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     /**
@@ -42,11 +48,60 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     public UberStockGuiFrame() {
         initComponents();
         
-        productButtonMap = new HashMap<>();
+        serviceLocator.registerService("ProductPreviewController", new ProductPreviewController(ItemPreviewImage, itemNameLbl, itemPriceLbl, currentStockLbl, cartQuantityToAddField));
+        
+        categoryButtonMap = new HashMap<>();
+        CategoryManager categoryManager = new CategoryManager();
+        
+        int row = 0;
+        int col = 0;
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        gridBagConstraints.fill = SwingUtilities.HORIZONTAL;
+        for(Category category : categoryManager.getCategoryList())
+        {
+            JButton button = new JButton();
+            button.setText(category.getCategoryName());
+            button.setPreferredSize(new Dimension(200, 100));
+            button.setMinimumSize(new Dimension(200, 100));
+            //button.setMargin(new Insets(5, 5, 5, 5));
+            
+            button.addActionListener((ae) -> {
+                Category categoryClicked = categoryButtonMap.get((JButton)ae.getSource());
+                System.err.println("Category Clicked: " + categoryClicked.getCategoryID());
+                //Product view controller set view.
+                ProductViewController productViewController = (ProductViewController)serviceLocator.getService("ProductViewController");
+                productViewController.buildViewPanel(categoryClicked.getCategoryID(), productBtnGrid);
+                repaint();
+                revalidate();
+
+//productScrollPanel.removeAll();
+                
+                //productScrollPanel.add(productViewController.setView(categoryClicked.getCategoryID()));
+                //repaint();
+                //revalidate();
+            });
+            
+            
+            categoryButtonMap.put(button, category);
+            
+            gridBagConstraints.gridx = row;
+            gridBagConstraints.gridy = col;
+            
+            categoryControlPanel.add(button, gridBagConstraints);
+            ++col;
+        }
+        
+        ProductViewController productViewController = (ProductViewController)serviceLocator.getService("ProductViewController");
+        //productViewController.buildViewPanel(0, productBtnGrid);
+        
+
+        
+        
+        /*productButtonMap = new HashMap<>();
         
         ProductManager productManager = (ProductManager)serviceLocator.getService("ProductManager");
-
-
+        
         String imageURI = "../resources/imgs/";
         int row = 0;
         int col = 0;
@@ -71,7 +126,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             button.setMinimumSize(new Dimension(250, 250));
             button.setPreferredSize(new Dimension(250, 250));
             button.setMargin(new Insets(5, 5, 5, 5));
-
+            
             button.addActionListener((ae) -> {
                 ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
                 Product clickedProduct = productButtonMap.get((JButton)ae.getSource());
@@ -108,7 +163,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             
             //System.out.println(product.getImageURI());
         }
-            
+        */    
         
         
         contentView.add(loginPanel, "1");
@@ -176,6 +231,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         cartControlPanel = new javax.swing.JPanel();
         checkOutCartBtn = new javax.swing.JButton();
         clearCartBtn = new javax.swing.JButton();
+        categoryControlPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("UberStock");
@@ -344,12 +400,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         productScrollPanel.setPreferredSize(new java.awt.Dimension(800, 500));
 
         productBtnGrid.setMinimumSize(new java.awt.Dimension(400, 400));
-        productBtnGrid.setPreferredSize(null);
         productBtnGrid.setLayout(new java.awt.GridBagLayout());
         productScrollPanel.setViewportView(productBtnGrid);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.gridheight = 2;
@@ -362,7 +417,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         cartScrollPanel.setMinimumSize(new java.awt.Dimension(200, 200));
         cartScrollPanel.setPreferredSize(new java.awt.Dimension(300, 300));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 17, 0, 20);
@@ -374,7 +429,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         uberStockNameLbl.setText("UberStock");
         uberStockNameLbl.setPreferredSize(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.1;
@@ -398,7 +453,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         paintPanel.setLayout(paintPanelLayout);
         paintPanelLayout.setHorizontalGroup(
             paintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 460, Short.MAX_VALUE)
+            .addGap(0, 450, Short.MAX_VALUE)
             .addGroup(paintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(paintPanelLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -416,7 +471,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -487,7 +542,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         previewItemPanel.add(itemNameLbl, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.1;
@@ -517,7 +572,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 1;
@@ -542,12 +597,21 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         cartControlPanel.add(clearCartBtn, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 18, 0, 20);
         storePanel.add(cartControlPanel, gridBagConstraints);
+
+        categoryControlPanel.setMinimumSize(new java.awt.Dimension(100, 100));
+        categoryControlPanel.setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        storePanel.add(categoryControlPanel, gridBagConstraints);
 
         contentView.add(storePanel, "card3");
 
@@ -569,7 +633,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             UserNameField.setText("");
             PasswordField.setText("");
             
-
+            
             
             
             cardLayout = (CardLayout)contentView.getLayout();
@@ -648,6 +712,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     private javax.swing.JPanel cartControlPanel;
     private javax.swing.JTextField cartQuantityToAddField;
     private javax.swing.JScrollPane cartScrollPanel;
+    private javax.swing.JPanel categoryControlPanel;
     private javax.swing.JButton checkOutCartBtn;
     private javax.swing.JButton clearCartBtn;
     private javax.swing.JPanel contentView;

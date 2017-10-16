@@ -53,8 +53,11 @@ public class UberStockApp {
         /************************************************************************************************************************************/
         serviceLocator.registerService("sqlController", new sqlController());
         serviceLocator.registerService("ProductManager", new ProductManager());
+        serviceLocator.registerService("ProductViewController", new ProductViewController());
+        serviceLocator.registerService("CategoryManager", new CategoryManager());
         serviceLocator.registerService("Login", new Login());
         serviceLocator.registerService("ShoppingCart", new ShoppingCart());
+
         
 
         /*Ignore for now, test class playing with the idea of how to implement the sql inside classess that need database access*/
