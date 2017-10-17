@@ -58,19 +58,7 @@ public class UberStockApp {
         serviceLocator.registerService("Login", new Login());
         serviceLocator.registerService("ShoppingCart", new ShoppingCart());
 
-        
-
-        /*Ignore for now, test class playing with the idea of how to implement the sql inside classess that need database access*/
-        TestClass t = new TestClass();
-        t.getMessage();
-        
-        //ProductManager productManager = new ProductManager();
-        //productManager.buildProductList();
-        
-        //productManager.printList();
-        
-        
-        
+        /* Constructing the GUI Frame */
         SwingUtilities.invokeLater(new Runnable()
         {
             @Override

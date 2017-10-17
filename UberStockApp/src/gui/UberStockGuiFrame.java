@@ -5,17 +5,12 @@
  */
 package gui;
 
-import java.awt.Button;
+
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.Image;
 import java.awt.Insets;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -24,8 +19,6 @@ import javax.swing.SwingUtilities;
 import uberstockapp.Category;
 import uberstockapp.CategoryManager;
 import uberstockapp.Login;
-import uberstockapp.Product;
-import uberstockapp.ProductManager;
 import uberstockapp.ProductPreviewController;
 import uberstockapp.ProductViewController;
 import uberstockapp.ServiceLocator;
@@ -38,7 +31,6 @@ import uberstockapp.ShoppingCart;
  */
 public class UberStockGuiFrame extends javax.swing.JFrame {
     
-    //private HashMap<JButton, Product> productButtonMap;
     private HashMap<JButton, Category> categoryButtonMap;
     CardLayout cardLayout = null;
     ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
@@ -64,22 +56,17 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             button.setText(category.getCategoryName());
             button.setPreferredSize(new Dimension(200, 100));
             button.setMinimumSize(new Dimension(200, 100));
-            //button.setMargin(new Insets(5, 5, 5, 5));
+            button.setMargin(new Insets(5, 5, 5, 5));
             
             button.addActionListener((ae) -> {
                 Category categoryClicked = categoryButtonMap.get((JButton)ae.getSource());
-                System.err.println("Category Clicked: " + categoryClicked.getCategoryID());
-                //Product view controller set view.
+                //System.err.println("Category Clicked: " + categoryClicked.getCategoryID());
+
                 ProductViewController productViewController = (ProductViewController)serviceLocator.getService("ProductViewController");
                 productViewController.buildViewPanel(categoryClicked.getCategoryID(), productBtnGrid);
+
                 repaint();
                 revalidate();
-
-//productScrollPanel.removeAll();
-                
-                //productScrollPanel.add(productViewController.setView(categoryClicked.getCategoryID()));
-                //repaint();
-                //revalidate();
             });
             
             
@@ -91,86 +78,12 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             categoryControlPanel.add(button, gridBagConstraints);
             ++col;
         }
-        
-        ProductViewController productViewController = (ProductViewController)serviceLocator.getService("ProductViewController");
-        //productViewController.buildViewPanel(0, productBtnGrid);
-        
 
-        
-        
-        /*productButtonMap = new HashMap<>();
-        
-        ProductManager productManager = (ProductManager)serviceLocator.getService("ProductManager");
-        
-        String imageURI = "../resources/imgs/";
-        int row = 0;
-        int col = 0;
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        for(Product product : productManager.getProductList())
-        {
-
-            String resourcePath = imageURI + product.getImageURI();
-            //System.err.println("Image Resource Path: " + resourcePath);
-            ImageIcon productImage = new ImageIcon(getClass().getResource(resourcePath));
-
-
-            //Image image = ImageIO.read(ss().getResource("/resources/imgs/" + product.getImageURI());
-            JButton button = new JButton();  //, productImage);
-
-            button.setPreferredSize(new Dimension(350,350));
-            button.setText(product.getName());
-            button.setIcon(productImage);
-            button.setVerticalTextPosition(SwingConstants.BOTTOM);
-            button.setHorizontalTextPosition(SwingConstants.CENTER);
-            button.setMinimumSize(new Dimension(250, 250));
-            button.setPreferredSize(new Dimension(250, 250));
-            button.setMargin(new Insets(5, 5, 5, 5));
-            
-            button.addActionListener((ae) -> {
-                ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
-                Product clickedProduct = productButtonMap.get((JButton)ae.getSource());
-                    System.out.println("Product Event Click Name: " + clickedProduct.getName() + " Image uri: " + product.getImageURI());
-
-
-                    shoppingCart.setPreviewProduct(clickedProduct);
-                    ItemPreviewImage.setIcon(new ImageIcon(getClass().getResource(imageURI + clickedProduct.getImageURI())));
-                    itemNameLbl.setText(clickedProduct.getName());
-                    itemPriceLbl.setText("$"+Float.toString(clickedProduct.getPrice()));
-                    
-                    //System.out.println(clickedProduct.getPrice());
-                    currentStockLbl.setText(Integer.toString(clickedProduct.getQuantity()));
-                    repaint();
-                    revalidate();
-            });
-
-            productButtonMap.put(button, product);
-            
-            gridBagConstraints.gridx = row;
-            gridBagConstraints.gridy = col;
-            
-            System.err.println("Column: " + col + " Row: " + row);
-            productBtnGrid.add(button, gridBagConstraints);
-            
-            ++col;
-            
-            if(col % 3 == 0)
-            {
-                System.err.println("Col Mod 3 true: " + col);
-                col = 0;
-                ++row;
-            }
-            
-            //System.out.println(product.getImageURI());
-        }
-        */    
-        
         
         contentView.add(loginPanel, "1");
         contentView.add(storePanel, "2");
         contentView.add(registerPanel, "3");
-        
-        
+       
         Dimension screenSize = getToolkit().getScreenSize();
         add(contentView);
         pack();
@@ -492,6 +405,8 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 3;
         previewItemPanel.add(currentStockLbl, gridBagConstraints);
 
+        cartQuantityToAddField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cartQuantityToAddField.setText("0");
         cartQuantityToAddField.setMinimumSize(new java.awt.Dimension(60, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -641,25 +556,19 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         login.setLoginUserName(UserNameField.getText());
         login.setLoginPassword(String.valueOf(PasswordField.getPassword()));
         
-        System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
+        //System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
         
         if(login.tryUserLogin())
         {
             UserNameField.setText("");
             PasswordField.setText("");
             
-            
-            
-            
             cardLayout = (CardLayout)contentView.getLayout();
             cardLayout.show(contentView, "2");
             
             repaint();
             revalidate();
-            
-            
-            
-            
+
         }
         else
         {
@@ -711,27 +620,27 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             System.err.println("Registration Error");
         }
         
-        System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
+        //System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
     }//GEN-LAST:event_registerFormRegisterBtnActionPerformed
 
     
     private void cancelAddToCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelAddToCartBtnActionPerformed
         ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
         ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
-                    productPreviewController.getItemImage().setIcon(null);
-                    productPreviewController.getItemName().setText("");
-                    productPreviewController.getItemPrice().setText("");
-                    productPreviewController.getItemStock().setText("");
-                    productPreviewController.getItemQuantity().setText("");
-                    shoppingCart.setPreviewProduct(null);
+        
+        //reset product preview view
+        productPreviewController.reset();
+        //set the previously clicked product reference inside the shopping cart class to null.
+        shoppingCart.setPreviewProduct(null);
         
     }//GEN-LAST:event_cancelAddToCartBtnActionPerformed
 
     
     private void addToCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToCartBtnActionPerformed
         
-       ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
+        ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
                
+        /* Todo Handle exception thrown for parse error */
         shoppingCart.addCartItem(Integer.parseInt(cartQuantityToAddField.getText()), cartListPanel);
         
             repaint();
@@ -739,10 +648,6 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         System.out.println(shoppingCart.toString());
         
     }//GEN-LAST:event_addToCartBtnActionPerformed
-
-
-
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ItemPreviewImage;

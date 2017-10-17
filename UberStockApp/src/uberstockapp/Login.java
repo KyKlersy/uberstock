@@ -61,7 +61,9 @@ public class Login implements SQL_Interface{
             e.printStackTrace();
         } 
 
-        /*try
+        /* Ignore Test code for enum usage idea.
+        
+        try
         {
             if(!resultSet.isBeforeFirst())
             {

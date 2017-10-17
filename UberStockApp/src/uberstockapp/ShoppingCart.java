@@ -17,9 +17,9 @@ import javax.swing.JPanel;
  */
 public class ShoppingCart {
     
-    private ArrayList<Product> cartList;
+    private final ArrayList<Product> cartList;
     private Product previewProduct = null;
-    private HashMap<JPanel, Product> panelDeleteBtnMap;
+    private final HashMap<JPanel, Product> panelDeleteBtnMap;
     
     private final ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     
@@ -88,10 +88,8 @@ public class ShoppingCart {
     public String toString()
     {
         String productList = "";
-        for(Product productTemp : cartList)
-        {
-            productList += (productTemp.getName() + " ");
-        }
+        
+        productList = cartList.stream().map((productTemp) -> (productTemp.getName() + " ")).reduce(productList, String::concat);
         
         return productList;
     }

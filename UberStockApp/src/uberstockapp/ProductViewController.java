@@ -21,8 +21,8 @@ import javax.swing.SwingConstants;
  */
 public class ProductViewController {
 
-    private HashMap<Integer, JPanel> categoryPanelViewMap;
-    private HashMap<JButton, Product> productButtonMap;
+    private final HashMap<Integer, JPanel> categoryPanelViewMap;
+    private final HashMap<JButton, Product> productButtonMap;
     ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     public ProductViewController() 
     {
@@ -33,19 +33,13 @@ public class ProductViewController {
     public final void buildViewPanel(int categoryID, JPanel btnPanel)
     {
         ProductManager productManager = (ProductManager)serviceLocator.getService("ProductManager");
-        CategoryManager categoryManager = (CategoryManager)serviceLocator.getService("CategoryManager");
         
         ArrayList<Product> categoryMatchedProduct = new ArrayList<>();
         btnPanel.removeAll();
         
-        for(Product product : productManager.getProductList())
-        {
-            if(product.getCategory() == categoryID)
-            {
-                categoryMatchedProduct.add(product);
-            }
-            
-        }
+        productManager.getProductList().stream().filter((product) -> (product.getCategory() == categoryID)).forEachOrdered((product) -> {
+            categoryMatchedProduct.add(product);
+        });
         
         
         String imageURI = "../resources/imgs/";
@@ -58,11 +52,9 @@ public class ProductViewController {
         {
             
             String resourcePath = imageURI + product.getImageURI();
-            System.err.println("Image Resource Path: " + resourcePath);
+            //System.err.println("Image Resource Path: " + resourcePath);
             ImageIcon productImage = new ImageIcon(getClass().getResource(resourcePath));
 
-
-            //Image image = ImageIO.read(ss().getResource("/resources/imgs/" + product.getImageURI());
             JButton button = new JButton();  //, productImage);
 
             button.setPreferredSize(new Dimension(350,350));
@@ -78,13 +70,11 @@ public class ProductViewController {
                 ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
                 ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
                 Product clickedProduct = productButtonMap.get((JButton)ae.getSource());
-                    //System.out.println("Product Event Click Name: " + clickedProduct.getName() + " Image uri: " + product.getImageURI());
 
-                    productPreviewController.getItemImage().setIcon(new ImageIcon(getClass().getResource(imageURI + clickedProduct.getImageURI())));
-                    productPreviewController.getItemName().setText(clickedProduct.getName());
-                    productPreviewController.getItemPrice().setText("$"+Float.toString(clickedProduct.getPrice()));
-                    productPreviewController.getItemStock().setText(Integer.toString(clickedProduct.getQuantity()));
-                    shoppingCart.setPreviewProduct(clickedProduct);
+                productPreviewController.setPreviewFrameView(new ImageIcon(getClass().getResource(imageURI + clickedProduct.getImageURI())),
+                        clickedProduct.getName(), ("$"+Float.toString(clickedProduct.getPrice())),Integer.toString(clickedProduct.getQuantity()));
+
+                shoppingCart.setPreviewProduct(clickedProduct);
 
             });
 
@@ -100,16 +90,14 @@ public class ProductViewController {
 
             if(col % 3 == 0)
             {
-                System.err.println("Col Mod 3 true: " + col);
+                //System.err.println("Col Mod 3 true: " + col);
                 col = 0;
                 ++row;
             }
 
             //System.out.println(product.getImageURI());
         }
-            
-            
-            
+     
     }
        
 
