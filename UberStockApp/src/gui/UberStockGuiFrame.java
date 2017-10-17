@@ -174,7 +174,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         Dimension screenSize = getToolkit().getScreenSize();
         add(contentView);
         pack();
-        setResizable(false);
+        //setResizable(false);
         setSize(screenSize.width,screenSize.height);
         setVisible(true);
         
@@ -212,6 +212,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         productScrollPanel = new javax.swing.JScrollPane();
         productBtnGrid = new javax.swing.JPanel();
         cartScrollPanel = new javax.swing.JScrollPane();
+        cartListPanel = new javax.swing.JPanel();
         uberStockNameLbl = new javax.swing.JLabel();
         paintPanel = new javax.swing.JPanel();
         storeBtn = new javax.swing.JButton();
@@ -416,6 +417,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
         cartScrollPanel.setMinimumSize(new java.awt.Dimension(200, 200));
         cartScrollPanel.setPreferredSize(new java.awt.Dimension(300, 300));
+
+        cartListPanel.setLayout(new java.awt.GridLayout(0, 1, 0, 2));
+        cartScrollPanel.setViewportView(cartListPanel);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 3;
@@ -520,6 +525,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         previewItemPanel.add(itemPriceText, gridBagConstraints);
 
         addToCartBtn.setText("Add to Cart");
+        addToCartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addToCartBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
@@ -527,6 +537,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         previewItemPanel.add(addToCartBtn, gridBagConstraints);
 
         cancelAddToCartBtn.setText("Cancel");
+        cancelAddToCartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelAddToCartBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
@@ -699,6 +714,32 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
     }//GEN-LAST:event_registerFormRegisterBtnActionPerformed
 
+    
+    private void cancelAddToCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelAddToCartBtnActionPerformed
+        ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
+        ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
+                    productPreviewController.getItemImage().setIcon(null);
+                    productPreviewController.getItemName().setText("");
+                    productPreviewController.getItemPrice().setText("");
+                    productPreviewController.getItemStock().setText("");
+                    productPreviewController.getItemQuantity().setText("");
+                    shoppingCart.setPreviewProduct(null);
+        
+    }//GEN-LAST:event_cancelAddToCartBtnActionPerformed
+
+    
+    private void addToCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToCartBtnActionPerformed
+        
+       ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
+               
+        shoppingCart.addCartItem(Integer.parseInt(cartQuantityToAddField.getText()), cartListPanel);
+        
+            repaint();
+            revalidate();
+        System.out.println(shoppingCart.toString());
+        
+    }//GEN-LAST:event_addToCartBtnActionPerformed
+
 
 
     
@@ -710,6 +751,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     private javax.swing.JButton addToCartBtn;
     private javax.swing.JButton cancelAddToCartBtn;
     private javax.swing.JPanel cartControlPanel;
+    private javax.swing.JPanel cartListPanel;
     private javax.swing.JTextField cartQuantityToAddField;
     private javax.swing.JScrollPane cartScrollPanel;
     private javax.swing.JPanel categoryControlPanel;
