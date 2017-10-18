@@ -12,11 +12,12 @@ Username varchar(50),
 Password varchar(50),  
 Membership int,
 AllowAdmin bit,
+UclubReward float,
 PRIMARY KEY(UserID)
 );
 
-INSERT INTO Users(UserID, Username, Password, Membership, AllowAdmin)
-VALUES(NULL,'user','user', 1, 0),(NULL,'admin','admin',2,1);
+INSERT INTO Users(UserID, Username, Password, Membership, AllowAdmin, UclubReward)
+VALUES(NULL,'user','user', 1, 0, 0.0),(NULL,'admin','admin',2,1, 100.0);
 
 CREATE TABLE MembershipType(
 MembershipID int NOT NULL,
