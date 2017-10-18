@@ -22,6 +22,7 @@ public class Login implements SQL_Interface{
     private String userName;
     private String password;
     private int insertStatus;
+    ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     
     public Login()
     {
@@ -42,11 +43,30 @@ public class Login implements SQL_Interface{
             else
             {
                 resultSet.next();
+
+                
                 
                 /*To do write code for handling which user class abstract to register as a service here*/
                 /* ServiceLocator.getServiceLocatorInstance().registerService("User", new "Name of user concrete class"); */
-                
-                
+                if(resultSet.getInt("Membership") == 0)
+                {
+                    /* Standard user */
+                    serviceLocator.registerService("User", new StandardUser(resultSet.getString("Username"), 
+                                                            resultSet.getString("Password"), resultSet.getInt("UserID"), 
+                                                            resultSet.getInt("Membership"), resultSet.getBoolean("AllowAdmin")
+                                                            ));
+                    
+                }
+                else if(resultSet.getInt("Membership") == 1)
+                {
+                    /* Uclub member user*/
+                    serviceLocator.registerService("User", new UClubMemberUser(resultSet.getString("Username"), 
+                                                            resultSet.getString("Password"), resultSet.getInt("UserID"), 
+                                                            resultSet.getInt("Membership"), resultSet.getBoolean("AllowAdmin"),
+                                                            resultSet.getFloat("UclubReward")
+                                                            ));
+                }
+                    
                 System.out.println("UserName" + resultSet.getString("UserName"));
                 return true;
             }
@@ -128,7 +148,7 @@ public class Login implements SQL_Interface{
         
         if(commandType == "Query")
         {
-            query = ("SELECT UserID, Username, Password, Membership, AllowAdmin FROM USERS WHERE Username = '" + getUserName() + "' AND Password = '" + getPassword() + "'");
+            query = ("SELECT UserID, Username, Password, Membership, AllowAdmin, UclubReward FROM USERS WHERE Username = '" + getUserName() + "' AND Password = '" + getPassword() + "'");
             setResults(sql.executeQuery(query));
         }
         else if(commandType == "Insert")
