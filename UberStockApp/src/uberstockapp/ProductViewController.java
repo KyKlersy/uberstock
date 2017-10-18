@@ -7,6 +7,7 @@ package uberstockapp;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.Image;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class ProductViewController {
             
             String resourcePath = imageURI + product.getImageURI();
             System.err.println("Product: " + product.getName());
-            ImageIcon productImage = new ImageIcon(getClass().getResource(resourcePath));
+            ImageIcon productImage = new ImageIcon(new ImageIcon(getClass().getResource(resourcePath)).getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
 
             JButton button = new JButton();  //, productImage);
 
@@ -70,8 +71,9 @@ public class ProductViewController {
                 ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
                 ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
                 Product clickedProduct = productButtonMap.get((JButton)ae.getSource());
-
-                productPreviewController.setPreviewFrameView(new ImageIcon(getClass().getResource(imageURI + clickedProduct.getImageURI())),
+                ImageIcon icon = new ImageIcon(new ImageIcon(getClass().getResource(imageURI + clickedProduct.getImageURI())).getImage().getScaledInstance(400, 400, Image.SCALE_DEFAULT));
+                
+                productPreviewController.setPreviewFrameView(icon,
                         clickedProduct.getName(), ("$"+Float.toString(clickedProduct.getPrice())),Integer.toString(clickedProduct.getQuantity()));
 
                 shoppingCart.setPreviewProduct(clickedProduct);
