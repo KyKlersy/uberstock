@@ -5,6 +5,7 @@
  */
 package uberstockapp;
 
+import Interfaces.Resetable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JButton;
@@ -15,7 +16,7 @@ import javax.swing.JPanel;
  *
  * @author Kyle
  */
-public class ShoppingCart {
+public class ShoppingCart implements Resetable{
     
     private final ArrayList<Product> cartList;
     private Product previewProduct = null;
@@ -41,11 +42,15 @@ public class ShoppingCart {
         if(previewProduct != null)
         {
             //Case where product has more than enough in stock to add to cart. Returns true.
-            if(previewProduct.reduceQuantity(quantity))
+            if(previewProduct.enoughStock(quantity))
             {      
                 //add to list
-                cartList.add(previewProduct);
-
+                
+                Product deepCopy = new Product(previewProduct.getProductID(), previewProduct.getName(), previewProduct.getCategory(), previewProduct.getPrice(), previewProduct.getQuantity(), previewProduct.getImageURI());
+                cartList.add(deepCopy);
+                
+                previewProduct.reduceQuantity(quantity);
+                System.err.println(deepCopy.getQuantity());
                 JLabel itemNameJLabel = new JLabel(previewProduct.getName());
                 JLabel quantityJLabel = new JLabel("Quantity: "+Integer.toString(quantity));
                 JLabel priceJLabel = new JLabel("$"+Float.toString(previewProduct.getPrice()));
@@ -89,7 +94,7 @@ public class ShoppingCart {
     {
         String productList = "";
         
-        productList = cartList.stream().map((productTemp) -> (productTemp.getName() + " ")).reduce(productList, String::concat);
+        productList = cartList.stream().map((productTemp) -> (productTemp.getName() + " " + productTemp.getQuantity())).reduce(productList, String::concat);
         
         return productList;
     }
@@ -98,4 +103,23 @@ public class ShoppingCart {
     {
         return this.cartList;
     }  
+
+    @Override
+    public void reset() {
+        ProductManager productManager = (ProductManager) serviceLocator.getService("ProductManager");
+        
+        /* Loop through this cart list adding back the quantity to the original product list */
+        cartList.forEach((cartproduct) -> {
+            System.out.println("Deep Copy Original count " + cartproduct.getQuantity());   
+            productManager.getProductList().forEach((product) -> {  
+                if(cartproduct.getName() == product.getName())
+                {    
+                    System.out.println("Changed Internal count " + product.getQuantity());
+                    product.setQuantity(cartproduct.getQuantity());  
+                }                
+            });
+        });
+        
+        panelDeleteBtnMap.clear();
+    }
 }
