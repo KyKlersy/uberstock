@@ -52,7 +52,7 @@ public class ProductViewController {
         {
             
             String resourcePath = imageURI + product.getImageURI();
-            //System.err.println("Image Resource Path: " + resourcePath);
+            System.err.println("Product: " + product.getName());
             ImageIcon productImage = new ImageIcon(getClass().getResource(resourcePath));
 
             JButton button = new JButton();  //, productImage);
@@ -85,7 +85,8 @@ public class ProductViewController {
 
             //System.err.println("Column: " + col + " Row: " + row);
             btnPanel.add(button, gridBagConstraints);
-
+            btnPanel.repaint();
+            btnPanel.revalidate();
             ++col;
 
             if(col % 3 == 0)
