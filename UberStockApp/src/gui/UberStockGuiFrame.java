@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -403,7 +404,6 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         previewItemPanel.add(currentStockLbl, gridBagConstraints);
 
         cartQuantityToAddField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cartQuantityToAddField.setText("0");
         cartQuantityToAddField.setMinimumSize(new java.awt.Dimension(60, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -510,6 +510,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
         checkOutCartBtn.setText("Checkout");
         checkOutCartBtn.setPreferredSize(null);
+        checkOutCartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkOutCartBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -618,22 +623,22 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
         confirmOrderControlPanel.setLayout(new java.awt.GridBagLayout());
 
-        jToggleButton1.setText("jToggleButton1");
+        jToggleButton1.setText("Become Member");
         confirmOrderControlPanel.add(jToggleButton1, new java.awt.GridBagConstraints());
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Confirm Checkout");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         confirmOrderControlPanel.add(jButton1, gridBagConstraints);
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Cancel");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         confirmOrderControlPanel.add(jButton2, gridBagConstraints);
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("Cost $19.95 per year");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -746,11 +751,26 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
                
         /* Todo Handle exception thrown for parse error */
-        shoppingCart.addCartItem(Integer.parseInt(cartQuantityToAddField.getText()), cartListPanel);
+        try 
+        {
+            
+            shoppingCart.addCartItem(Integer.parseInt(cartQuantityToAddField.getText()), cartListPanel);            
+
+        }
+        catch (InputMismatchException e) 
+        {
+            cartQuantityToAddField.setText("");
+            //System.err.println(e.toString());
+        }
+        catch (NumberFormatException numberFormatException)
+        {
+            cartQuantityToAddField.setText("NaN");
+        }
         
-            repaint();
-            revalidate();
-        System.out.println(shoppingCart.toString());
+        
+
+
+            
         
     }//GEN-LAST:event_addToCartBtnActionPerformed
 
@@ -762,6 +782,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         cartListPanel.removeAll();
         //repaint();
     }//GEN-LAST:event_clearCartBtnActionPerformed
+
+    private void checkOutCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkOutCartBtnActionPerformed
+        cardLayout = (CardLayout)contentView.getLayout();
+        cardLayout.show(contentView, "4");
+    }//GEN-LAST:event_checkOutCartBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ItemPreviewImage;

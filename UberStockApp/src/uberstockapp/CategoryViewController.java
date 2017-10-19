@@ -44,7 +44,7 @@ public class CategoryViewController {
         gridBagConstraints.fill = SwingUtilities.HORIZONTAL;
         for(Category category : categoryManager.getCategoryList())
         {
-            System.out.println("Category " + category.getCategoryName());
+            //System.out.println("Category " + category.getCategoryName());
             JButton button = new JButton();
             button.setText(category.getCategoryName());
             button.setPreferredSize(new Dimension(200, 100));

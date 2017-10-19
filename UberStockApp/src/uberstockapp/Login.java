@@ -67,7 +67,7 @@ public class Login implements SQL_Interface{
                                                             ));
                 }
                     
-                System.out.println("UserName" + resultSet.getString("UserName"));
+                System.out.println("UserName: " + resultSet.getString("UserName"));
                 return true;
             }
             

@@ -42,8 +42,8 @@ public class UberStockApp {
         /* Tables are created only once, but currently setup to wipe each    */
         /* time for testing purposes on my end.                              */
         /*********************************************************************/
-            buildDataBaseTables bdt = new buildDataBaseTables();
-            bdt.buildTables();
+            //buildDataBaseTables bdt = new buildDataBaseTables();
+            //bdt.buildTables();
         
         /*End block*/
         

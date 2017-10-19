@@ -8,6 +8,7 @@ package uberstockapp;
 import Interfaces.Resetable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,16 +19,18 @@ import javax.swing.JPanel;
  */
 public class ShoppingCart implements Resetable{
     
-    private final ArrayList<Product> cartList;
+    private final HashMap<Product, Product> cartList;
     private Product previewProduct = null;
-    private final HashMap<JPanel, Product> panelDeleteBtnMap;
+    private final HashMap<JPanel, Product> panelDeleteBtnMap;    
+    private final HashMap<Product, JLabel> mapPreviewToQuantityLabel;
     
     private final ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     
     public ShoppingCart()
     {
-        cartList = new ArrayList<>();
+        cartList = new HashMap<>();
         panelDeleteBtnMap = new HashMap<>();
+        mapPreviewToQuantityLabel = new HashMap<>();
         
     }
     
@@ -38,7 +41,94 @@ public class ShoppingCart implements Resetable{
     
     public boolean addCartItem(int quantity, JPanel cartPanel)
     {
+        ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
         //Preview item selected.
+        assert (previewProduct != null): "No preview product selected";
+        
+        /* Confirm the quantity requested is avaliable */
+        if(previewProduct.enoughStock(quantity))
+        {
+            /* Check to make sure the item being added is not already in the cart */
+            if(!cartList.containsKey(previewProduct))
+            {
+                /* Create a deep copy of the original product item values from the database */
+                Product deepCopiedProduct = new Product(previewProduct.getProductID(), previewProduct.getName(), previewProduct.getCategory(), previewProduct.getPrice(), previewProduct.getQuantity(), previewProduct.getImageURI());
+                
+                /* Create item control form */
+                JLabel itemNameJLabel = new JLabel(previewProduct.getName());
+                JLabel quantityJLabel = new JLabel("Quantity: "+Integer.toString(quantity));
+                JLabel priceJLabel = new JLabel("$"+Float.toString(previewProduct.getPrice()));
+                JButton deleteItemButton = new JButton(" X ");
+
+                JPanel panelGroup = new JPanel();
+                panelGroup.add(itemNameJLabel);
+                panelGroup.add(priceJLabel);
+                panelGroup.add(quantityJLabel);
+                panelGroup.add(deleteItemButton);
+
+                deleteItemButton.addActionListener((ae) -> {
+                    Product originalDatabaseProduct = cartList.get(previewProduct);
+                    Product modifiedDatabaseProduct = panelDeleteBtnMap.get(panelGroup);
+                    
+                    assert (originalDatabaseProduct != null): "Error could not get originalDatabaseProduct from map";
+                    //System.out.println("originalDatabaseProduct val: " + originalDatabaseProduct.getQuantity());
+                    assert (modifiedDatabaseProduct != null): "Error could not get modifiedDatabaseProduct from map";
+                    //System.out.println("modifiedDatabaseProduct val: " + modifiedDatabaseProduct.getQuantity());
+                    //System.out.println("original db value: " + originalDatabaseProduct.getQuantity() + " Reduced local value: "+modifiedDatabaseProduct.getQuantity());
+                    modifiedDatabaseProduct.increaseQuantity((originalDatabaseProduct.getQuantity() - modifiedDatabaseProduct.getQuantity()));
+                    
+                    productPreviewController.getItemStock().setText(Integer.toString(previewProduct.getQuantity()));
+                    productPreviewController.getItemQuantity().setText("");
+                    
+                    cartList.remove(previewProduct);
+                    panelDeleteBtnMap.remove(panelGroup);
+                    mapPreviewToQuantityLabel.remove(previewProduct);
+                    cartPanel.remove(panelGroup);                                     
+                    cartPanel.repaint();
+                    cartPanel.revalidate();
+                    ///System.out.println(this.toString());
+                });
+                
+                cartList.put(previewProduct,deepCopiedProduct);
+                panelDeleteBtnMap.put(panelGroup, previewProduct);
+                mapPreviewToQuantityLabel.put(previewProduct, quantityJLabel);
+                
+                /* reduce the quantity in stock for product */
+                previewProduct.reduceQuantity(quantity);
+                
+                productPreviewController.getItemStock().setText(Integer.toString(previewProduct.getQuantity()));
+                productPreviewController.getItemQuantity().setText("");
+
+                cartPanel.add(panelGroup);
+                
+                return true;
+                
+                
+            }
+            else /* Item is already in the list */
+            {
+                
+                Product cartProduct = cartList.get(previewProduct);
+                System.out.println("Cart Product Val: " + cartProduct.getQuantity());
+                JLabel quantityJLabel = mapPreviewToQuantityLabel.get(previewProduct);
+                previewProduct.reduceQuantity(quantity);
+                System.err.println("Stock remaining: " + previewProduct.getQuantity());
+                quantityJLabel.setText(Integer.toString((cartProduct.getQuantity() - previewProduct.getQuantity())));
+                
+                productPreviewController.getItemStock().setText(Integer.toString(previewProduct.getQuantity()));
+                productPreviewController.getItemQuantity().setText("");
+
+            }
+            
+            
+            
+        }
+            
+        
+        
+        
+        
+        /*
         if(previewProduct != null)
         {
             //Case where product has more than enough in stock to add to cart. Returns true.
@@ -46,11 +136,11 @@ public class ShoppingCart implements Resetable{
             {      
                 //add to list
                 
-                Product deepCopy = new Product(previewProduct.getProductID(), previewProduct.getName(), previewProduct.getCategory(), previewProduct.getPrice(), previewProduct.getQuantity(), previewProduct.getImageURI());
-                cartList.add(deepCopy);
-                
+                Product deepCopiedProduct = new Product(previewProduct.getProductID(), previewProduct.getName(), previewProduct.getCategory(), previewProduct.getPrice(), previewProduct.getQuantity(), previewProduct.getImageURI());
+
                 previewProduct.reduceQuantity(quantity);
-                System.err.println(deepCopy.getQuantity());
+                
+                //System.err.println(product.getQuantity());
                 JLabel itemNameJLabel = new JLabel(previewProduct.getName());
                 JLabel quantityJLabel = new JLabel("Quantity: "+Integer.toString(quantity));
                 JLabel priceJLabel = new JLabel("$"+Float.toString(previewProduct.getPrice()));
@@ -63,15 +153,20 @@ public class ShoppingCart implements Resetable{
                 panelGroup.add(deleteItemButton);
 
                 panelDeleteBtnMap.put(panelGroup, previewProduct);
-
+                cartList.put(deleteItemButton,deepCopiedProduct);
 
                 deleteItemButton.addActionListener((ae) -> {
-                    cartList.remove(panelDeleteBtnMap.get(panelGroup));
+                    Product originalDatabaseProduct = cartList.get((JButton)ae.getSource());
+                    Product modifiedDatabaseProduct = panelDeleteBtnMap.get(panelGroup);
+                    
+                    System.out.println("original db value: " + originalDatabaseProduct.getQuantity() + " Reduced local value: "+modifiedDatabaseProduct.getQuantity());
+                    
+                    /*cartList.remove(panelDeleteBtnMap.get(panelGroup));
                     cartPanel.remove(panelGroup);
                     cartPanel.repaint();
                     cartPanel.revalidate();
-                    System.out.println(this.toString());
-                });
+                    System.out.println(this.toString());*/
+                /*});
 
                 ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
                 
@@ -84,6 +179,7 @@ public class ShoppingCart implements Resetable{
                 return true;
             }
         }
+        */
 
                       
         return false;
@@ -94,32 +190,32 @@ public class ShoppingCart implements Resetable{
     {
         String productList = "";
         
-        productList = cartList.stream().map((productTemp) -> (productTemp.getName() + " " + productTemp.getQuantity())).reduce(productList, String::concat);
+        //productList = cartList.stream().map((productTemp) -> (productTemp.getName() + " " + productTemp.getQuantity())).reduce(productList, String::concat);
         
         return productList;
     }
 
+    /*
     public ArrayList<Product> getShoppingCart()
     {
         return this.cartList;
     }  
-
+*/
     @Override
     public void reset() {
-        ProductManager productManager = (ProductManager) serviceLocator.getService("ProductManager");
         
-        /* Loop through this cart list adding back the quantity to the original product list */
-        cartList.forEach((cartproduct) -> {
-            System.out.println("Deep Copy Original count " + cartproduct.getQuantity());   
-            productManager.getProductList().forEach((product) -> {  
-                if(cartproduct.getName() == product.getName())
-                {    
-                    System.out.println("Changed Internal count " + product.getQuantity());
-                    product.setQuantity(cartproduct.getQuantity());  
-                }                
-            });
-        });
-        
+        for(Map.Entry<Product,Product> cartListEntry : cartList.entrySet())
+        {
+            
+            Product tempModified = cartListEntry.getKey();
+            Product tempOriginal = cartListEntry.getValue();
+            System.out.println("Modififed val: " + tempModified.getQuantity() + " original val: " + tempOriginal.getQuantity());
+            tempModified.setQuantity(tempOriginal.getQuantity());
+            
+        }
+
+        cartList.clear();        
         panelDeleteBtnMap.clear();
+        mapPreviewToQuantityLabel.clear();
     }
 }

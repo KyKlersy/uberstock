@@ -53,7 +53,7 @@ public class ProductViewController {
         {
             
             String resourcePath = imageURI + product.getImageURI();
-            System.err.println("Product: " + product.getName());
+            //System.err.println("Product: " + product.getName());
             ImageIcon productImage = new ImageIcon(new ImageIcon(getClass().getResource(resourcePath)).getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
 
             JButton button = new JButton();  //, productImage);
