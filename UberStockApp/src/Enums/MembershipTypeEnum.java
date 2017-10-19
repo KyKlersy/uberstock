@@ -10,7 +10,7 @@ package Enums;
  * @author Kyle
  */
 public enum MembershipTypeEnum {
-    //TEst
+
     StandardMember("Standard",1),
     UCMember("UberStock Club Member", 2);
     
