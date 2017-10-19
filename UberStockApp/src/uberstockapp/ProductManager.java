@@ -59,10 +59,9 @@ public class ProductManager implements SQL_Interface
     
     public void printList()
     {
-        for(Product product : productList )
-        {
+        productList.forEach((product) -> {
             System.out.println("Product ID:: " + product.getProductID() + "Product Name:: " + product.getName());
-        }
+        });
         
     }
 

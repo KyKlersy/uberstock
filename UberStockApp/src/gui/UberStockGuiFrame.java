@@ -5,17 +5,13 @@
  */
 package gui;
 
-import java.awt.Button;
+
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.Image;
 import java.awt.Insets;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+import java.util.InputMismatchException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,9 +19,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import uberstockapp.Category;
 import uberstockapp.CategoryManager;
+import uberstockapp.CategoryViewController;
 import uberstockapp.Login;
-import uberstockapp.Product;
-import uberstockapp.ProductManager;
 import uberstockapp.ProductPreviewController;
 import uberstockapp.ProductViewController;
 import uberstockapp.ServiceLocator;
@@ -38,8 +33,8 @@ import uberstockapp.ShoppingCart;
  */
 public class UberStockGuiFrame extends javax.swing.JFrame {
     
-    //private HashMap<JButton, Product> productButtonMap;
-    private HashMap<JButton, Category> categoryButtonMap;
+    
+    
     CardLayout cardLayout = null;
     ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     /**
@@ -47,135 +42,27 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
      */
     public UberStockGuiFrame() {
         initComponents();
+        cardLayout = (CardLayout)contentView.getLayout();
         
         serviceLocator.registerService("ProductPreviewController", new ProductPreviewController(ItemPreviewImage, itemNameLbl, itemPriceLbl, currentStockLbl, cartQuantityToAddField));
+        serviceLocator.registerService("CategoryViewController", new CategoryViewController(categoryControlPanel, productBtnGrid));
         
-        categoryButtonMap = new HashMap<>();
-        CategoryManager categoryManager = new CategoryManager();
-        
-        int row = 0;
-        int col = 0;
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        gridBagConstraints.fill = SwingUtilities.HORIZONTAL;
-        for(Category category : categoryManager.getCategoryList())
-        {
-            JButton button = new JButton();
-            button.setText(category.getCategoryName());
-            button.setPreferredSize(new Dimension(200, 100));
-            button.setMinimumSize(new Dimension(200, 100));
-            //button.setMargin(new Insets(5, 5, 5, 5));
-            
-            button.addActionListener((ae) -> {
-                Category categoryClicked = categoryButtonMap.get((JButton)ae.getSource());
-                System.err.println("Category Clicked: " + categoryClicked.getCategoryID());
-                //Product view controller set view.
-                ProductViewController productViewController = (ProductViewController)serviceLocator.getService("ProductViewController");
-                productViewController.buildViewPanel(categoryClicked.getCategoryID(), productBtnGrid);
-                repaint();
-                revalidate();
-
-//productScrollPanel.removeAll();
-                
-                //productScrollPanel.add(productViewController.setView(categoryClicked.getCategoryID()));
-                //repaint();
-                //revalidate();
-            });
-            
-            
-            categoryButtonMap.put(button, category);
-            
-            gridBagConstraints.gridx = row;
-            gridBagConstraints.gridy = col;
-            
-            categoryControlPanel.add(button, gridBagConstraints);
-            ++col;
-        }
-        
-        ProductViewController productViewController = (ProductViewController)serviceLocator.getService("ProductViewController");
-        //productViewController.buildViewPanel(0, productBtnGrid);
-        
-
-        
-        
-        /*productButtonMap = new HashMap<>();
-        
-        ProductManager productManager = (ProductManager)serviceLocator.getService("ProductManager");
-        
-        String imageURI = "../resources/imgs/";
-        int row = 0;
-        int col = 0;
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        for(Product product : productManager.getProductList())
-        {
-
-            String resourcePath = imageURI + product.getImageURI();
-            //System.err.println("Image Resource Path: " + resourcePath);
-            ImageIcon productImage = new ImageIcon(getClass().getResource(resourcePath));
-
-
-            //Image image = ImageIO.read(ss().getResource("/resources/imgs/" + product.getImageURI());
-            JButton button = new JButton();  //, productImage);
-
-            button.setPreferredSize(new Dimension(350,350));
-            button.setText(product.getName());
-            button.setIcon(productImage);
-            button.setVerticalTextPosition(SwingConstants.BOTTOM);
-            button.setHorizontalTextPosition(SwingConstants.CENTER);
-            button.setMinimumSize(new Dimension(250, 250));
-            button.setPreferredSize(new Dimension(250, 250));
-            button.setMargin(new Insets(5, 5, 5, 5));
-            
-            button.addActionListener((ae) -> {
-                ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
-                Product clickedProduct = productButtonMap.get((JButton)ae.getSource());
-                    System.out.println("Product Event Click Name: " + clickedProduct.getName() + " Image uri: " + product.getImageURI());
-
-
-                    shoppingCart.setPreviewProduct(clickedProduct);
-                    ItemPreviewImage.setIcon(new ImageIcon(getClass().getResource(imageURI + clickedProduct.getImageURI())));
-                    itemNameLbl.setText(clickedProduct.getName());
-                    itemPriceLbl.setText("$"+Float.toString(clickedProduct.getPrice()));
-                    
-                    //System.out.println(clickedProduct.getPrice());
-                    currentStockLbl.setText(Integer.toString(clickedProduct.getQuantity()));
-                    repaint();
-                    revalidate();
-            });
-
-            productButtonMap.put(button, product);
-            
-            gridBagConstraints.gridx = row;
-            gridBagConstraints.gridy = col;
-            
-            System.err.println("Column: " + col + " Row: " + row);
-            productBtnGrid.add(button, gridBagConstraints);
-            
-            ++col;
-            
-            if(col % 3 == 0)
-            {
-                System.err.println("Col Mod 3 true: " + col);
-                col = 0;
-                ++row;
-            }
-            
-            //System.out.println(product.getImageURI());
-        }
-        */    
-        
+        CategoryViewController categoryViewController = (CategoryViewController)serviceLocator.getService("CategoryViewController");
+        categoryViewController.buildCategoryView();
+        repaint();
         
         contentView.add(loginPanel, "1");
         contentView.add(storePanel, "2");
         contentView.add(registerPanel, "3");
-        
-        
+        contentView.add(confirmOrderControlPanel, "4");
+       
         Dimension screenSize = getToolkit().getScreenSize();
-        add(contentView);
+        //add(contentView);
+        cardLayout.show(contentView, "1");
         pack();
-        setResizable(false);
-        setSize(screenSize.width,screenSize.height);
+        
+        //setResizable(false);
+        //setSize(screenSize.width,screenSize.height);
         setVisible(true);
         
         
@@ -212,9 +99,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         productScrollPanel = new javax.swing.JScrollPane();
         productBtnGrid = new javax.swing.JPanel();
         cartScrollPanel = new javax.swing.JScrollPane();
+        cartListPanel = new javax.swing.JPanel();
         uberStockNameLbl = new javax.swing.JLabel();
         paintPanel = new javax.swing.JPanel();
         storeBtn = new javax.swing.JButton();
+        UserNameLbl = new javax.swing.JLabel();
         previewItemPanel = new javax.swing.JPanel();
         currentStockLbl = new javax.swing.JLabel();
         cartQuantityToAddField = new javax.swing.JTextField();
@@ -232,6 +121,23 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         checkOutCartBtn = new javax.swing.JButton();
         clearCartBtn = new javax.swing.JButton();
         categoryControlPanel = new javax.swing.JPanel();
+        checkoutPanel = new javax.swing.JPanel();
+        checkOutCartPanel = new javax.swing.JScrollPane();
+        cartListPanel1 = new javax.swing.JPanel();
+        papaylPanel = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        confirmOrderControlPanel = new javax.swing.JPanel();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("UberStock");
@@ -416,6 +322,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
         cartScrollPanel.setMinimumSize(new java.awt.Dimension(200, 200));
         cartScrollPanel.setPreferredSize(new java.awt.Dimension(300, 300));
+
+        cartListPanel.setLayout(new java.awt.GridLayout(0, 1, 0, 2));
+        cartScrollPanel.setViewportView(cartListPanel);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 3;
@@ -453,7 +363,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         paintPanel.setLayout(paintPanelLayout);
         paintPanelLayout.setHorizontalGroup(
             paintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 450, Short.MAX_VALUE)
+            .addGroup(paintPanelLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(UserNameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(320, Short.MAX_VALUE))
             .addGroup(paintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(paintPanelLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -462,7 +375,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         );
         paintPanelLayout.setVerticalGroup(
             paintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
+            .addGroup(paintPanelLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(UserNameLbl)
+                .addContainerGap(40, Short.MAX_VALUE))
             .addGroup(paintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(paintPanelLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -487,6 +403,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 3;
         previewItemPanel.add(currentStockLbl, gridBagConstraints);
 
+        cartQuantityToAddField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cartQuantityToAddField.setMinimumSize(new java.awt.Dimension(60, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -520,6 +437,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         previewItemPanel.add(itemPriceText, gridBagConstraints);
 
         addToCartBtn.setText("Add to Cart");
+        addToCartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addToCartBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
@@ -527,6 +449,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         previewItemPanel.add(addToCartBtn, gridBagConstraints);
 
         cancelAddToCartBtn.setText("Cancel");
+        cancelAddToCartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelAddToCartBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
@@ -583,6 +510,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
         checkOutCartBtn.setText("Checkout");
         checkOutCartBtn.setPreferredSize(null);
+        checkOutCartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkOutCartBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -590,6 +522,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         cartControlPanel.add(checkOutCartBtn, gridBagConstraints);
 
         clearCartBtn.setText("Clear Cart");
+        clearCartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearCartBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -615,6 +552,106 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
         contentView.add(storePanel, "card3");
 
+        checkoutPanel.setLayout(new java.awt.GridBagLayout());
+
+        checkOutCartPanel.setMinimumSize(new java.awt.Dimension(200, 200));
+        checkOutCartPanel.setPreferredSize(new java.awt.Dimension(300, 300));
+
+        cartListPanel1.setLayout(new java.awt.GridLayout(0, 1, 0, 2));
+        checkOutCartPanel.setViewportView(cartListPanel1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(5, 17, 0, 20);
+        checkoutPanel.add(checkOutCartPanel, gridBagConstraints);
+
+        papaylPanel.setLayout(new java.awt.GridBagLayout());
+
+        jTextField1.setText("jTextField1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        papaylPanel.add(jTextField1, gridBagConstraints);
+
+        jTextField2.setText("jTextField2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        papaylPanel.add(jTextField2, gridBagConstraints);
+
+        jTextField3.setText("jTextField3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        papaylPanel.add(jTextField3, gridBagConstraints);
+
+        jTextField4.setText("jTextField4");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        papaylPanel.add(jTextField4, gridBagConstraints);
+
+        jLabel2.setText("Middle Initial:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        papaylPanel.add(jLabel2, gridBagConstraints);
+
+        jLabel3.setText("First Name:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        papaylPanel.add(jLabel3, gridBagConstraints);
+
+        jLabel4.setText("Last Name:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        papaylPanel.add(jLabel4, gridBagConstraints);
+
+        jLabel5.setText("Email Address:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        papaylPanel.add(jLabel5, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        checkoutPanel.add(papaylPanel, gridBagConstraints);
+
+        confirmOrderControlPanel.setLayout(new java.awt.GridBagLayout());
+
+        jToggleButton1.setText("Become Member");
+        confirmOrderControlPanel.add(jToggleButton1, new java.awt.GridBagConstraints());
+
+        jButton1.setText("Confirm Checkout");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        confirmOrderControlPanel.add(jButton1, gridBagConstraints);
+
+        jButton2.setText("Cancel");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        confirmOrderControlPanel.add(jButton2, gridBagConstraints);
+
+        jLabel1.setText("Cost $19.95 per year");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        confirmOrderControlPanel.add(jLabel1, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        checkoutPanel.add(confirmOrderControlPanel, gridBagConstraints);
+
+        contentView.add(checkoutPanel, "card5");
+
         getContentPane().add(contentView, java.awt.BorderLayout.CENTER);
 
         pack();
@@ -626,25 +663,21 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         login.setLoginUserName(UserNameField.getText());
         login.setLoginPassword(String.valueOf(PasswordField.getPassword()));
         
-        System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
+        //System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
         
         if(login.tryUserLogin())
         {
             UserNameField.setText("");
             PasswordField.setText("");
             
-            
-            
-            
+            UserNameLbl.setText(login.getUserName());
             cardLayout = (CardLayout)contentView.getLayout();
             cardLayout.show(contentView, "2");
             
-            repaint();
-            revalidate();
-            
-            
-            
-            
+            //repaint();
+            //revalidate();
+            //pack();
+
         }
         else
         {
@@ -655,6 +688,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     private void storeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_storeBtnActionPerformed
         cardLayout = (CardLayout)contentView.getLayout();
         cardLayout.show(contentView, "1");
+        UserNameLbl.setText("");
         revalidate();
     }//GEN-LAST:event_storeBtnActionPerformed
 
@@ -696,34 +730,104 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             System.err.println("Registration Error");
         }
         
-        System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
+        //System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
     }//GEN-LAST:event_registerFormRegisterBtnActionPerformed
 
-
+    
+    private void cancelAddToCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelAddToCartBtnActionPerformed
+        ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
+        ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
+        
+        //reset product preview view
+        productPreviewController.reset();
+        //set the previously clicked product reference inside the shopping cart class to null.
+        shoppingCart.setPreviewProduct(null);
+        
+    }//GEN-LAST:event_cancelAddToCartBtnActionPerformed
 
     
+    private void addToCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToCartBtnActionPerformed
+        
+        ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
+               
+        /* Todo Handle exception thrown for parse error */
+        try 
+        {
+            
+            shoppingCart.addCartItem(Integer.parseInt(cartQuantityToAddField.getText()), cartListPanel);            
+
+        }
+        catch (InputMismatchException e) 
+        {
+            cartQuantityToAddField.setText("");
+            //System.err.println(e.toString());
+        }
+        catch (NumberFormatException numberFormatException)
+        {
+            cartQuantityToAddField.setText("NaN");
+        }
+        
+        
+
+
+            
+        
+    }//GEN-LAST:event_addToCartBtnActionPerformed
+
+    private void clearCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearCartBtnActionPerformed
+        ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
+        ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
+        shoppingCart.reset();
+        productPreviewController.reset();
+        cartListPanel.removeAll();
+        //repaint();
+    }//GEN-LAST:event_clearCartBtnActionPerformed
+
+    private void checkOutCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkOutCartBtnActionPerformed
+        cardLayout = (CardLayout)contentView.getLayout();
+        cardLayout.show(contentView, "4");
+    }//GEN-LAST:event_checkOutCartBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ItemPreviewImage;
     private javax.swing.JPasswordField PasswordField;
     private javax.swing.JTextField UserNameField;
+    private javax.swing.JLabel UserNameLbl;
     private javax.swing.JButton addToCartBtn;
     private javax.swing.JButton cancelAddToCartBtn;
     private javax.swing.JPanel cartControlPanel;
+    private javax.swing.JPanel cartListPanel;
+    private javax.swing.JPanel cartListPanel1;
     private javax.swing.JTextField cartQuantityToAddField;
     private javax.swing.JScrollPane cartScrollPanel;
     private javax.swing.JPanel categoryControlPanel;
     private javax.swing.JButton checkOutCartBtn;
+    private javax.swing.JScrollPane checkOutCartPanel;
+    private javax.swing.JPanel checkoutPanel;
     private javax.swing.JButton clearCartBtn;
+    private javax.swing.JPanel confirmOrderControlPanel;
     private javax.swing.JPanel contentView;
     private javax.swing.JLabel currentStockLbl;
     private javax.swing.JLabel currentStockText;
     private javax.swing.JLabel itemNameLbl;
     private javax.swing.JLabel itemPriceLbl;
     private javax.swing.JLabel itemPriceText;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JButton loginBtn;
     private javax.swing.JPanel loginPanel;
     private javax.swing.JPanel paintPanel;
+    private javax.swing.JPanel papaylPanel;
     private javax.swing.JLabel passwordLbl;
     private javax.swing.JPanel previewItemPanel;
     private javax.swing.JPanel productBtnGrid;

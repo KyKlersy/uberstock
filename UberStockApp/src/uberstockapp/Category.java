@@ -35,7 +35,4 @@ public class Category {
         return categoryName;
     }
 
-    
-    
-    
 }

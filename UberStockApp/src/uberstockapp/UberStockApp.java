@@ -11,6 +11,7 @@ import uberstockapp.database.sqlController;
 /**
  *
  * @author Kyle
+ * this is a commit.
  */
 public class UberStockApp {
 
@@ -42,8 +43,8 @@ public class UberStockApp {
         /* Tables are created only once, but currently setup to wipe each    */
         /* time for testing purposes on my end.                              */
         /*********************************************************************/
-            buildDataBaseTables bdt = new buildDataBaseTables();
-            bdt.buildTables();
+            //buildDataBaseTables bdt = new buildDataBaseTables();
+            //bdt.buildTables();
         
         /*End block*/
         
@@ -58,19 +59,7 @@ public class UberStockApp {
         serviceLocator.registerService("Login", new Login());
         serviceLocator.registerService("ShoppingCart", new ShoppingCart());
 
-        
-
-        /*Ignore for now, test class playing with the idea of how to implement the sql inside classess that need database access*/
-        TestClass t = new TestClass();
-        t.getMessage();
-        
-        //ProductManager productManager = new ProductManager();
-        //productManager.buildProductList();
-        
-        //productManager.printList();
-        
-        
-        
+        /* Constructing the GUI Frame */
         SwingUtilities.invokeLater(new Runnable()
         {
             @Override

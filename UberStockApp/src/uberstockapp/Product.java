@@ -31,17 +31,27 @@ public class Product {
         this.quantity = quantity;
     }
     
-    public boolean reduceQuantity(int quantity)
+    public boolean enoughStock(int quantity)
     {
         if(this.quantity >= quantity)
         {
-            this.quantity -= quantity;
+            
             return true;
         }
         else
         {
             return false;
         }
+    }
+    
+    public void reduceQuantity(int quantity)
+    {
+        this.quantity -= quantity;
+    }
+    
+    public void increaseQuantity(int quantity)
+    {
+        this.quantity += quantity;
     }
     
     public int getQuantity(){
