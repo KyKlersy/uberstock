@@ -64,7 +64,8 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         //setResizable(false);
         //setSize(screenSize.width,screenSize.height);
         setVisible(true);
-        
+        //kepp the window maximize
+        this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
         
     }
 
