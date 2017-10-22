@@ -1,12 +1,15 @@
 package uberstockapp;
 
-import java.util.ArrayList;
+import Enums.MembershipTypeEnum;
+import interfaces.SQL_Interface;
+import java.sql.ResultSet;
+import uberstockapp.database.sqlController;
 
 /**
  *
  * @author carlo
  */
-public abstract class UserAbstractBase {
+public abstract class UserAbstractBase{
     
     
     private String Username;   
@@ -15,6 +18,8 @@ public abstract class UserAbstractBase {
     private int membership;
     private String membershipName;
     private boolean allowAdmin;
+    private final sqlController sql;
+    
     
     
     public UserAbstractBase(String username, String password, int uuid, int membership, boolean allowAdmin)
@@ -24,6 +29,8 @@ public abstract class UserAbstractBase {
         setUuid(uuid);
         setMembership(membership);
         setAllowAdmin(allowAdmin);
+        sql = (sqlController)ServiceLocator.getServiceLocatorInstance().getService("sqlController");
+
     }
     
     @Override
@@ -57,6 +64,8 @@ public abstract class UserAbstractBase {
     {
         
         this.membership = membership;
+        setMembershipName();
+        
         
     } 
     
@@ -81,18 +90,27 @@ public abstract class UserAbstractBase {
         return this.membership; 
     }
 
-    public final void setMembershipName(String membershipName)
+    public final void setMembershipName()
     {
-        this.membershipName = membershipName;
+        for(MembershipTypeEnum membershipEnum : MembershipTypeEnum.values())
+        {
+            if(getMembership() == membershipEnum.getMembershipID())
+            {
+                this.membershipName = (membershipEnum.getMembershipName());
+            }
+        } 
     }
     
     public final String getMembershipName()
     {
         return this.membershipName;
     }
-    
-    public void checkout(ArrayList<Product> shoppingList)
+
+
+    public void updateUser()
     {
-        
+        String sqlUpdateCommand = "UPDATE USERS SET Username = '" + getUsername() + "',Password = '"+ getPassword() + "',Membership = " + getMembership() + " Where UserID = "+ getUuid();
+        sql.executeUpdate(sqlUpdateCommand);
     }
+
 }

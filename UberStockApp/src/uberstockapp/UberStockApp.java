@@ -33,21 +33,7 @@ public class UberStockApp {
         /*
         */
         ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
-        
-        /*********************************************************************/
-        /* This block here builds the database, you only need to run it once */
-        /* to build the tables, its fine to leave it uncommented after it has*/
-        /* been run once, but it will constantly wipe and rebuild the tables */
-        /* should you wish it to not do that comment out the lines below     */
-        /* It will be changed in the final version of our project so that    */
-        /* Tables are created only once, but currently setup to wipe each    */
-        /* time for testing purposes on my end.                              */
-        /*********************************************************************/
-            //buildDataBaseTables bdt = new buildDataBaseTables();
-            //bdt.buildTables();
-        
-        /*End block*/
-        
+
         /************************************************************************************************************************************/
         /*  Registering a class into the service locator, first parameter is a string name to find the serbice by, use the class name,      */
         /*        second parameter is the class object itself, your classess should be constructed like below with default constructors     */
@@ -58,6 +44,26 @@ public class UberStockApp {
         serviceLocator.registerService("CategoryManager", new CategoryManager());
         serviceLocator.registerService("Login", new Login());
         serviceLocator.registerService("ShoppingCart", new ShoppingCart());
+        
+        /*********************************************************************/
+        /* This block here builds the database, you only need to run it once */
+        /* to build the tables, its fine to leave it uncommented after it has*/
+        /* been run once, but it will constantly wipe and rebuild the tables */
+        /* should you wish it to not do that comment out the lines below     */
+        /* It will be changed in the final version of our project so that    */
+        /* Tables are created only once, but currently setup to wipe each    */
+        /* time for testing purposes on my end.                              */
+        /*********************************************************************/
+            buildDataBaseTables bdt = new buildDataBaseTables();
+            if(!bdt.databaseExists())
+            {
+                bdt.buildTables();
+            }
+            
+        /*End block*/
+        
+
+        
 
         /* Constructing the GUI Frame */
         SwingUtilities.invokeLater(new Runnable()
