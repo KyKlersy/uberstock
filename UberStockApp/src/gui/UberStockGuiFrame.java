@@ -55,6 +55,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         contentView.add(storePanel, "2");
         contentView.add(registerPanel, "3");
         contentView.add(confirmOrderControlPanel, "4");
+        incorrectLoginLabel.setVisible(false);
        
         Dimension screenSize = getToolkit().getScreenSize();
         //add(contentView);
@@ -87,6 +88,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         PasswordField = new javax.swing.JPasswordField();
         usernameLbl = new javax.swing.JLabel();
         UserNameField = new javax.swing.JTextField();
+        incorrectLoginLabel = new javax.swing.JLabel();
         registerPanel = new javax.swing.JPanel();
         registerFormRegisterBtn = new javax.swing.JButton();
         registerFormCancelBtn = new javax.swing.JButton();
@@ -211,6 +213,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         loginPanel.add(UserNameField, gridBagConstraints);
+
+        incorrectLoginLabel.setForeground(new java.awt.Color(255, 0, 0));
+        incorrectLoginLabel.setText("Incorrect Username or Password");
+        loginPanel.add(incorrectLoginLabel, new java.awt.GridBagConstraints());
 
         contentView.add(loginPanel, "card2");
 
@@ -682,6 +688,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         }
         else
         {
+            incorrectLoginLabel.setVisible(true);
             System.err.println("Login Failed.");
         }        
     }//GEN-LAST:event_loginBtnActionPerformed
@@ -780,7 +787,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
         shoppingCart.reset();
         productPreviewController.reset();
-        cartListPanel.removeAll();
+        cartListPanel.repaint();
         //repaint();
     }//GEN-LAST:event_clearCartBtnActionPerformed
 
@@ -810,6 +817,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     private javax.swing.JPanel contentView;
     private javax.swing.JLabel currentStockLbl;
     private javax.swing.JLabel currentStockText;
+    private javax.swing.JLabel incorrectLoginLabel;
     private javax.swing.JLabel itemNameLbl;
     private javax.swing.JLabel itemPriceLbl;
     private javax.swing.JLabel itemPriceText;
