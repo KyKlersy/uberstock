@@ -11,11 +11,7 @@ import java.awt.GridBagLayout;
 import java.awt.LayoutManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-<<<<<<< HEAD
-=======
 import java.text.DecimalFormat;
-import java.util.Map;
->>>>>>> a53171a7927b4cd4cfa7846282fca55067fa76f3
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;

@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Kyle
+ * @author Kyle and Tri
  */
 public class ShoppingCart implements Resetable{
     
@@ -52,6 +52,7 @@ public class ShoppingCart implements Resetable{
             if(!cartList.containsKey(previewProduct))
             {
                 /* Create a deep copy of the original product item values from the database */
+                
                 Product deepCopiedProduct = new Product(previewProduct.getProductID(), previewProduct.getName(), previewProduct.getCategory(), previewProduct.getPrice(), previewProduct.getQuantity(), previewProduct.getImageURI());
                 
                 /* Create item control form */
@@ -71,7 +72,7 @@ public class ShoppingCart implements Resetable{
                     Product modifiedDatabaseProduct = panelDeleteBtnMap.get(panelGroup);
                     
                     assert (originalDatabaseProduct != null): "Error could not get originalDatabaseProduct from map";
-                    //System.out.println("originalDatabaseProduct val: " + originalDatabaseProduct.getQuantity());
+                    System.out.println("originalDatabaseProduct val: " + originalDatabaseProduct.getQuantity());
                     assert (modifiedDatabaseProduct != null): "Error could not get modifiedDatabaseProduct from map";
                     //System.out.println("modifiedDatabaseProduct val: " + modifiedDatabaseProduct.getQuantity());
                     //System.out.println("original db value: " + originalDatabaseProduct.getQuantity() + " Reduced local value: "+modifiedDatabaseProduct.getQuantity());
@@ -96,7 +97,12 @@ public class ShoppingCart implements Resetable{
                 /* reduce the quantity in stock for product */
                 previewProduct.reduceQuantity(quantity);
                 
-                productPreviewController.getItemStock().setText(Integer.toString(previewProduct.getQuantity()));
+                if (previewProduct.getQuantity() == 0)
+                    productPreviewController.getItemStock().setText("Not Available");
+                else
+                    productPreviewController.getItemStock().setText(Integer.toString(previewProduct.getQuantity()));
+
+                
                 productPreviewController.getItemQuantity().setText("");
 
                 cartPanel.add(panelGroup);

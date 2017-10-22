@@ -1,36 +1,22 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This class is responsible for handling and setting up the gaphical user interfaces
+ * as well as registering all of the java controls and their event handlers\
+ * this class also makes use of registering classess into the service locator for
+ * classess that store internal references to gui swing controls.
  */
 package gui;
 
 
 import java.awt.CardLayout;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.util.HashMap;
 import java.util.InputMismatchException;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import uberstockapp.AdminPanel;
-import uberstockapp.Category;
-import uberstockapp.CategoryManager;
 import uberstockapp.CategoryViewController;
 import uberstockapp.CheckoutCartController;
 import uberstockapp.Login;
 import uberstockapp.ProductPreviewController;
-import uberstockapp.ProductViewController;
 import uberstockapp.ServiceLocator;
 import uberstockapp.ShoppingCart;
-
 
 /**
  *
