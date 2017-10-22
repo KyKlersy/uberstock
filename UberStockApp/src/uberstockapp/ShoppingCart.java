@@ -23,6 +23,7 @@ public class ShoppingCart implements Resetable{
     private Product previewProduct = null;
     private final HashMap<JPanel, Product> panelDeleteBtnMap;    
     private final HashMap<Product, JLabel> mapPreviewToQuantityLabel;
+    private final HashMap<JButton, Product> mapDeleteBtn;
     
     private final ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     
@@ -31,7 +32,7 @@ public class ShoppingCart implements Resetable{
         cartList = new HashMap<>();
         panelDeleteBtnMap = new HashMap<>();
         mapPreviewToQuantityLabel = new HashMap<>();
-        
+        mapDeleteBtn = new HashMap<>();
     }
     
     public void setPreviewProduct(Product product)
@@ -68,7 +69,8 @@ public class ShoppingCart implements Resetable{
                 panelGroup.add(deleteItemButton);
 
                 deleteItemButton.addActionListener((ae) -> {
-                    Product originalDatabaseProduct = cartList.get(previewProduct);
+                    Product originalDatabaseProduct = mapDeleteBtn.get((JButton)ae.getSource());
+                    //Product originalDatabaseProduct = cartList.get(previewProduct);
                     Product modifiedDatabaseProduct = panelDeleteBtnMap.get(panelGroup);
                     
                     assert (originalDatabaseProduct != null): "Error could not get originalDatabaseProduct from map";
@@ -84,12 +86,14 @@ public class ShoppingCart implements Resetable{
                     cartList.remove(previewProduct);
                     panelDeleteBtnMap.remove(panelGroup);
                     mapPreviewToQuantityLabel.remove(previewProduct);
+                    mapDeleteBtn.remove((JButton)ae.getSource());
                     cartPanel.remove(panelGroup);                                     
                     cartPanel.repaint();
                     cartPanel.revalidate();
                     ///System.out.println(this.toString());
                 });
                 
+                mapDeleteBtn.put(deleteItemButton, deepCopiedProduct);
                 cartList.put(previewProduct,deepCopiedProduct);
                 panelDeleteBtnMap.put(panelGroup, previewProduct);
                 mapPreviewToQuantityLabel.put(previewProduct, quantityJLabel);
