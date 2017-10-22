@@ -132,6 +132,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         itemNameLbl = new javax.swing.JLabel();
         shoppingCartPaintPanel = new javax.swing.JPanel();
         shoppingCartLbl = new javax.swing.JLabel();
+        cartTextLbl = new javax.swing.JLabel();
         cartControlPanel = new javax.swing.JPanel();
         checkOutCartBtn = new javax.swing.JButton();
         clearCartBtn = new javax.swing.JButton();
@@ -502,7 +503,12 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
         shoppingCartPaintPanel.setBackground(new java.awt.Color(206, 209, 213));
 
-        shoppingCartLbl.setText("jLabel1");
+        shoppingCartLbl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imgs/uberstockCartLogo.jpg"))); // NOI18N
+        shoppingCartLbl.setMinimumSize(new java.awt.Dimension(35, 35));
+        shoppingCartLbl.setPreferredSize(new java.awt.Dimension(35, 35));
+
+        cartTextLbl.setForeground(new java.awt.Color(199, 32, 44));
+        cartTextLbl.setText("Shopping Cart");
 
         javax.swing.GroupLayout shoppingCartPaintPanelLayout = new javax.swing.GroupLayout(shoppingCartPaintPanel);
         shoppingCartPaintPanel.setLayout(shoppingCartPaintPanelLayout);
@@ -510,15 +516,21 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             shoppingCartPaintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(shoppingCartPaintPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(shoppingCartLbl)
-                .addContainerGap(599, Short.MAX_VALUE))
+                .addComponent(shoppingCartLbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(cartTextLbl)
+                .addContainerGap(265, Short.MAX_VALUE))
         );
         shoppingCartPaintPanelLayout.setVerticalGroup(
             shoppingCartPaintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(shoppingCartPaintPanelLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(shoppingCartLbl)
+                .addComponent(shoppingCartLbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, shoppingCartPaintPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cartTextLbl)
+                .addGap(14, 14, 14))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -999,6 +1011,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     private javax.swing.JPanel cartListPanel;
     private javax.swing.JTextField cartQuantityToAddField;
     private javax.swing.JScrollPane cartScrollPanel;
+    private javax.swing.JLabel cartTextLbl;
     private javax.swing.JPanel categoryControlPanel;
     private javax.swing.JButton checkOutCartBtn;
     private javax.swing.JScrollPane checkOutCartPanel;
