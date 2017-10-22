@@ -70,7 +70,6 @@ public class ShoppingCart implements Resetable{
 
                 deleteItemButton.addActionListener((ae) -> {
                     Product originalDatabaseProduct = mapDeleteBtn.get((JButton)ae.getSource());
-                    //Product originalDatabaseProduct = cartList.get(previewProduct);
                     Product modifiedDatabaseProduct = panelDeleteBtnMap.get(panelGroup);
                     
                     assert (originalDatabaseProduct != null): "Error could not get originalDatabaseProduct from map";
