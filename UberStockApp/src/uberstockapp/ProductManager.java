@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package uberstockapp;
-import interfaces.SQL_Interface;
+import Interfaces.SQL_Interface;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

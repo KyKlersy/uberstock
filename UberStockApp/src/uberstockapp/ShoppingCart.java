@@ -142,12 +142,13 @@ public class ShoppingCart implements Resetable{
         return productList;
     }
 
-    /*
-    public ArrayList<Product> getShoppingCart()
-    {
-        return this.cartList;
-    }  
-*/
+    public void clearList()
+    {        
+        cartList.clear();        
+        panelDeleteBtnMap.clear();
+        mapPreviewToQuantityLabel.clear();        
+    }
+    
     @Override
     public void reset() {
         
@@ -161,8 +162,5 @@ public class ShoppingCart implements Resetable{
             
         }
 
-        cartList.clear();        
-        panelDeleteBtnMap.clear();
-        mapPreviewToQuantityLabel.clear();
     }
 }

@@ -1,6 +1,6 @@
 package uberstockapp;
 
-import interfaces.SQL_Interface;
+import Interfaces.SQL_Interface;
 import java.sql.ResultSet;
 import uberstockapp.database.sqlController;
 

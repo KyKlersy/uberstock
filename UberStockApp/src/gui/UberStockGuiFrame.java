@@ -971,7 +971,20 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         CheckoutCartController checkoutCartController = (CheckoutCartController)serviceLocator.getService("CheckoutCartController");
+        ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
         checkoutCartController.checkOutOrder();
+        checkoutCartController.reset();
+        shoppingCart.clearList();
+        cartListPanel.removeAll();
+
+        repaint();
+        
+        cardLayout = (CardLayout)contentView.getLayout();
+        cardLayout.show(contentView, "2");
+        
+
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void searchUserHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUserHistoryActionPerformed
