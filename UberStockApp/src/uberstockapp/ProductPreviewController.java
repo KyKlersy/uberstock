@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author Kyle
+ * @author Kyle and Tri
  */
 public class ProductPreviewController implements Resetable{
 

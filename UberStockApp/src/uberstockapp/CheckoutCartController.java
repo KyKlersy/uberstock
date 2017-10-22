@@ -11,6 +11,11 @@ import java.awt.GridBagLayout;
 import java.awt.LayoutManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+<<<<<<< HEAD
+=======
+import java.text.DecimalFormat;
+import java.util.Map;
+>>>>>>> a53171a7927b4cd4cfa7846282fca55067fa76f3
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -20,7 +25,7 @@ import uberstockapp.database.sqlController;
 
 /**
  *
- * @author Kyle
+ * @author Kyle and Tri
  */
 public class CheckoutCartController implements Resetable{
 
@@ -227,7 +232,9 @@ public class CheckoutCartController implements Resetable{
         subtotalJPanel = new JPanel(lm);
 
         JLabel subtotalNameLabel = new JLabel("Subtotal: ");
-        JLabel subtotalLabel = new JLabel("$"+Float.toString(subtotal));
+        java.text.DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        JLabel subtotalLabel = new JLabel("$"+df.format(subtotal));
         gbc.gridx = 1;
         gbc.gridy = 0;
         subtotalJPanel.add(subtotalNameLabel, gbc);
@@ -246,7 +253,9 @@ public class CheckoutCartController implements Resetable{
         taxJPanel = new JPanel(lm);
 
         JLabel taxNameLabel = new JLabel("Tax");
-        JLabel taxLabel = new JLabel("$"+Float.toString(tax));
+        java.text.DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        JLabel taxLabel = new JLabel("$"+df.format(tax));
         gbc.gridx = 1;
         gbc.gridy = 0;
         taxJPanel.add(taxNameLabel, gbc);
@@ -265,7 +274,9 @@ public class CheckoutCartController implements Resetable{
         finalTotalPanel = new JPanel(lm);
 
         JLabel totalNameLabel = new JLabel("Final Total: ");
-        JLabel finalTotalLabel = new JLabel("$"+Float.toString(finalTotal()));
+        java.text.DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);        
+        JLabel finalTotalLabel = new JLabel("$"+df.format(finalTotal()));
         gbc.gridx = 1;
         gbc.gridy = 0;
         finalTotalPanel.add(totalNameLabel, gbc);

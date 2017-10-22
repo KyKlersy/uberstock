@@ -18,7 +18,7 @@ import javax.swing.SwingConstants;
 
 /**
  *
- * @author Kyle
+ * @author Kyle and Tri
  */
 public class ProductViewController {
 
