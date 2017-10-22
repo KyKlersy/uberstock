@@ -63,6 +63,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         contentView.add(registerPanel, "3");
         contentView.add(checkoutPanel, "4");
         contentView.add(AdminPanel,"5");
+<<<<<<< HEAD
+=======
+        incorrectLoginLabel.setVisible(false);
+>>>>>>> login
        
         //Dimension screenSize = getToolkit().getScreenSize();
         //add(contentView);
@@ -778,6 +782,8 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             UserNameField.setText("");
             PasswordField.setText("");
             
+            incorrectLoginLabel.setVisible(false);
+            
             UserNameLbl.setText("Welcome " + login.getUserName());
             cardLayout = (CardLayout)contentView.getLayout();
             cardLayout.show(contentView, "2");
@@ -1001,6 +1007,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     private javax.swing.JTextField email;
     private javax.swing.JTextField firstname;
     private javax.swing.JButton goBackToStoreBtn;
+<<<<<<< HEAD
+=======
+
+    private javax.swing.JLabel incorrectLoginLabel;
+>>>>>>> login
     private javax.swing.JLabel itemNameLbl;
     private javax.swing.JLabel itemPriceLbl;
     private javax.swing.JLabel itemPriceText;
