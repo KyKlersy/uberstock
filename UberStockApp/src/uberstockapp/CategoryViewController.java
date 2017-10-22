@@ -48,8 +48,9 @@ public class CategoryViewController {
             JButton button = new JButton();
             button.setText(category.getCategoryName());
             button.setPreferredSize(new Dimension(200, 100));
-            button.setMinimumSize(new Dimension(200, 100));
+            //button.setMinimumSize(new Dimension(100, 100));
             button.setMargin(new Insets(5, 5, 5, 5));
+            
             
             button.addActionListener((ae) -> {
                 Category categoryClicked = categoryButtonMap.get((JButton)ae.getSource());

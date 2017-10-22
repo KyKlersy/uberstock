@@ -105,4 +105,5 @@ static final String JDBC_DRIVER = "org.hsqldb.jdbc.JDBCDriver";
         
         return -1;
     }
+    
 }

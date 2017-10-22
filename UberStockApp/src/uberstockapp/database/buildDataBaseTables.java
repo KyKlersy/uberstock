@@ -10,7 +10,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import org.hsqldb.cmdline.SqlFile;
+import uberstockapp.ServiceLocator;
 
 /**
  *
@@ -66,6 +69,32 @@ public class buildDataBaseTables {
     public void dropTables()
     {
         /* For later use will run specific code */
+    }
+    
+    public boolean databaseExists()
+    {
+        ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
+        sqlController sql = (sqlController)serviceLocator.getService("sqlController");
+        ResultSet exists = sql.executeQuery("Select * FROM USERS");
+        
+        try 
+        {
+            
+            if(!exists.isBeforeFirst())
+            {
+                return false;
+            }
+            
+        } catch (SQLException sqle) 
+        {
+            sqle.printStackTrace();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+     return true;
     }
     
 }

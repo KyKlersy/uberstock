@@ -103,5 +103,5 @@ VALUES(NULL, 'Hand-tufted Wool Area Rug (8'' x 11'')', 0, 688.87, 15, 'Hand-tuft
 (NULL, 'Distressed Leather Couch ', 6, 455.99, 4, 'distressed-leather-couch.jpg'),
 (NULL, 'Cherry Dresser', 6, 367.09, 9, 'cherryDresser.jpg'),
 (NULL, 'Memory foam King Set', 6, 265.77, 5, 'memoryfoam-king-set.jpg'),
-(NULL, 'Short Bar Chair ', 6, 35.99, 5, 'shortBarChair .jpg'),
+(NULL, 'Short Bar Chair ', 6, 35.99, 5, 'shortBarChair.jpg'),
 (NULL, 'Octagon End Table ', 6, 109.99, 5, 'octagonEndTable.jpg');

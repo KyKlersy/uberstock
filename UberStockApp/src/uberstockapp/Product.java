@@ -1,15 +1,22 @@
 package uberstockapp;
+
+import interfaces.SQL_Interface;
+import java.sql.ResultSet;
+import uberstockapp.database.sqlController;
+
 /**
  *
  * @author tri.le
  */
-public class Product {
+public class Product implements SQL_Interface{
     private int productID;
     private final String name;
     private final int category;
     private final float price;
     private int quantity;
     private String imageURI;
+    
+    sqlController sql = (sqlController)ServiceLocator.getServiceLocatorInstance().getService("sqlController");
     
     public int getProductID(){
         return this.productID;
@@ -83,5 +90,20 @@ public class Product {
         this.price = price;
         this.quantity = quantity;
         this.imageURI = imageURI;
+    }
+
+    @Override
+    public void executeSQL(String commandType) {
+        String sqlUpdateCommand;
+        if(commandType == "Update")
+        {
+            sqlUpdateCommand= "Update InventoryItems SET ItemStock = " + getQuantity() + " where ItemID = "+ getProductID();
+            sql.executeUpdate(sqlUpdateCommand);
+        }
+    }
+
+    @Override
+    public void setResults(ResultSet results) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

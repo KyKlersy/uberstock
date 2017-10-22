@@ -22,6 +22,7 @@ public class Login implements SQL_Interface{
     private String userName;
     private String password;
     private int insertStatus;
+    private boolean allowAdmin;
     ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     
     public Login()
@@ -44,7 +45,7 @@ public class Login implements SQL_Interface{
             {
                 resultSet.next();
 
-                
+                allowAdmin = resultSet.getBoolean("AllowAdmin");
                 
                 /*To do write code for handling which user class abstract to register as a service here*/
                 /* ServiceLocator.getServiceLocatorInstance().registerService("User", new "Name of user concrete class"); */
@@ -80,35 +81,7 @@ public class Login implements SQL_Interface{
         {
             e.printStackTrace();
         } 
-
-        /* Ignore Test code for enum usage idea.
-        
-        try
-        {
-            if(!resultSet.isBeforeFirst())
-            {
-                return false;
-            }
-            else
-            {
-                resultSet.next();
-                for(MembershipTypeEnum membershipEnum : MembershipTypeEnum.values())
-                {
-                    if(resultSet.getInt("Membership") == membershipEnum.getMembershipID())
-                    {
-                        System.out.println("ID matched:: " + membershipEnum.getMembershipID());
-                    }
-                }
-                
-                return true;
-            }
-            
-        }
-        catch(SQLException sqle)
-        {
-            sqle.printStackTrace();
-            return false;
-        }*/
+ 
        return false;
     }
     
@@ -139,6 +112,11 @@ public class Login implements SQL_Interface{
 
     public String getPassword() {
         return password;
+    }
+    
+    public boolean getAdminRights()
+    {
+        return allowAdmin;
     }
 
     @Override

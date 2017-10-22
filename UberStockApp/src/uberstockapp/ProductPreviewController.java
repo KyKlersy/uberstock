@@ -90,10 +90,10 @@ public class ProductPreviewController implements Resetable{
     @Override
     public void reset() {
         itemImage.setIcon(null);
-        itemName.setText("");;
-        itemPrice.setText("");;
-        itemStock.setText("");;
-        itemQuantity.setText("");;
+        itemName.setText("");
+        itemPrice.setText("");
+        itemStock.setText("");
+        itemQuantity.setText("");        
         
     }
         

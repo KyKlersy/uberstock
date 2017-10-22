@@ -8,18 +8,23 @@ package gui;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import uberstockapp.AdminPanel;
 import uberstockapp.Category;
 import uberstockapp.CategoryManager;
 import uberstockapp.CategoryViewController;
+import uberstockapp.CheckoutCartController;
 import uberstockapp.Login;
 import uberstockapp.ProductPreviewController;
 import uberstockapp.ProductViewController;
@@ -33,7 +38,7 @@ import uberstockapp.ShoppingCart;
  */
 public class UberStockGuiFrame extends javax.swing.JFrame {
     
-    
+   
     
     CardLayout cardLayout = null;
     ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
@@ -42,10 +47,12 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
      */
     public UberStockGuiFrame() {
         initComponents();
+        AdminPanelBtn.setVisible(false);
         cardLayout = (CardLayout)contentView.getLayout();
         
         serviceLocator.registerService("ProductPreviewController", new ProductPreviewController(ItemPreviewImage, itemNameLbl, itemPriceLbl, currentStockLbl, cartQuantityToAddField));
         serviceLocator.registerService("CategoryViewController", new CategoryViewController(categoryControlPanel, productBtnGrid));
+        serviceLocator.registerService("CheckoutCartController", new CheckoutCartController(checkOutCartPanel, checkoutCartList, toggleMemberJoinBtn,joinMembershipPanel, firstname, middleinitial, lastname,email));
         
         CategoryViewController categoryViewController = (CategoryViewController)serviceLocator.getService("CategoryViewController");
         categoryViewController.buildCategoryView();
@@ -54,16 +61,18 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         contentView.add(loginPanel, "1");
         contentView.add(storePanel, "2");
         contentView.add(registerPanel, "3");
-        contentView.add(confirmOrderControlPanel, "4");
+        contentView.add(checkoutPanel, "4");
+        contentView.add(AdminPanel,"5");
         incorrectLoginLabel.setVisible(false);
        
-        Dimension screenSize = getToolkit().getScreenSize();
+        //Dimension screenSize = getToolkit().getScreenSize();
         //add(contentView);
         cardLayout.show(contentView, "1");
-        pack();
+        //pack();
         
         //setResizable(false);
         //setSize(screenSize.width,screenSize.height);
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         setVisible(true);
         //kepp the window maximize
         this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
@@ -105,8 +114,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         cartListPanel = new javax.swing.JPanel();
         uberStockNameLbl = new javax.swing.JLabel();
         paintPanel = new javax.swing.JPanel();
-        storeBtn = new javax.swing.JButton();
         UserNameLbl = new javax.swing.JLabel();
+        storeBtn = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        AdminPanelBtn = new javax.swing.JButton();
         previewItemPanel = new javax.swing.JPanel();
         currentStockLbl = new javax.swing.JLabel();
         cartQuantityToAddField = new javax.swing.JTextField();
@@ -126,27 +137,35 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         categoryControlPanel = new javax.swing.JPanel();
         checkoutPanel = new javax.swing.JPanel();
         checkOutCartPanel = new javax.swing.JScrollPane();
-        cartListPanel1 = new javax.swing.JPanel();
+        checkoutCartList = new javax.swing.JPanel();
         papaylPanel = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        firstname = new javax.swing.JTextField();
+        middleinitial = new javax.swing.JTextField();
+        lastname = new javax.swing.JTextField();
+        email = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         confirmOrderControlPanel = new javax.swing.JPanel();
-        jToggleButton1 = new javax.swing.JToggleButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        joinMembershipPanel = new javax.swing.JPanel();
+        toggleMemberJoinBtn = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
+        AdminPanel = new javax.swing.JPanel();
+        userIDSearchField = new javax.swing.JTextField();
+        searchUserHistory = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        UserHistoryTable = new javax.swing.JTable();
+        goBackToStoreBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("UberStock");
         setMinimumSize(new java.awt.Dimension(400, 400));
         setName("uberStockFrame"); // NOI18N
         setSize(new java.awt.Dimension(0, 0));
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
         contentView.setPreferredSize(new java.awt.Dimension(0, 0));
         contentView.setLayout(new java.awt.CardLayout());
@@ -355,43 +374,39 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         storePanel.add(uberStockNameLbl, gridBagConstraints);
 
         paintPanel.setBackground(new java.awt.Color(206, 209, 213));
-        paintPanel.setMinimumSize(new java.awt.Dimension(450, 60));
+        paintPanel.setMinimumSize(new java.awt.Dimension(550, 60));
+        paintPanel.setName(""); // NOI18N
         paintPanel.setPreferredSize(new java.awt.Dimension(400, 60));
+        paintPanel.setLayout(new java.awt.GridBagLayout());
 
-        storeBtn.setText("Goto Login Panel");
-        storeBtn.setPreferredSize(null);
+        UserNameLbl.setText("Welcome Kyle Klersy");
+        UserNameLbl.setPreferredSize(new java.awt.Dimension(90, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 110;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 6, 0, 0);
+        paintPanel.add(UserNameLbl, gridBagConstraints);
+
+        storeBtn.setText("Logout");
         storeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 storeBtnActionPerformed(evt);
             }
         });
+        paintPanel.add(storeBtn, new java.awt.GridBagConstraints());
 
-        javax.swing.GroupLayout paintPanelLayout = new javax.swing.GroupLayout(paintPanel);
-        paintPanel.setLayout(paintPanelLayout);
-        paintPanelLayout.setHorizontalGroup(
-            paintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(paintPanelLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(UserNameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(320, Short.MAX_VALUE))
-            .addGroup(paintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(paintPanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(storeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        paintPanelLayout.setVerticalGroup(
-            paintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(paintPanelLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(UserNameLbl)
-                .addContainerGap(40, Short.MAX_VALUE))
-            .addGroup(paintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(paintPanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(storeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        jButton3.setText("Profile");
+        paintPanel.add(jButton3, new java.awt.GridBagConstraints());
+
+        AdminPanelBtn.setText("Admin Panel");
+        AdminPanelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdminPanelBtnActionPerformed(evt);
+            }
+        });
+        paintPanel.add(AdminPanelBtn, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -495,7 +510,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             .addGroup(shoppingCartPaintPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(shoppingCartLbl)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(599, Short.MAX_VALUE))
         );
         shoppingCartPaintPanelLayout.setVerticalGroup(
             shoppingCartPaintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -548,7 +563,8 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 18, 0, 20);
         storePanel.add(cartControlPanel, gridBagConstraints);
 
-        categoryControlPanel.setMinimumSize(new java.awt.Dimension(100, 100));
+        categoryControlPanel.setMinimumSize(new java.awt.Dimension(150, 100));
+        categoryControlPanel.setPreferredSize(new java.awt.Dimension(150, 100));
         categoryControlPanel.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -561,11 +577,12 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
         checkoutPanel.setLayout(new java.awt.GridBagLayout());
 
-        checkOutCartPanel.setMinimumSize(new java.awt.Dimension(200, 200));
-        checkOutCartPanel.setPreferredSize(new java.awt.Dimension(300, 300));
+        checkOutCartPanel.setMinimumSize(new java.awt.Dimension(0, 0));
+        checkOutCartPanel.setPreferredSize(new java.awt.Dimension(500, 600));
 
-        cartListPanel1.setLayout(new java.awt.GridLayout(0, 1, 0, 2));
-        checkOutCartPanel.setViewportView(cartListPanel1);
+        checkoutCartList.setPreferredSize(new java.awt.Dimension(300, 600));
+        checkoutCartList.setLayout(new java.awt.GridLayout(0, 1));
+        checkOutCartPanel.setViewportView(checkoutCartList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -576,29 +593,29 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
         papaylPanel.setLayout(new java.awt.GridBagLayout());
 
-        jTextField1.setText("jTextField1");
+        firstname.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        papaylPanel.add(jTextField1, gridBagConstraints);
+        papaylPanel.add(firstname, gridBagConstraints);
 
-        jTextField2.setText("jTextField2");
+        middleinitial.setPreferredSize(new java.awt.Dimension(60, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        papaylPanel.add(jTextField2, gridBagConstraints);
+        papaylPanel.add(middleinitial, gridBagConstraints);
 
-        jTextField3.setText("jTextField3");
+        lastname.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        papaylPanel.add(jTextField3, gridBagConstraints);
+        papaylPanel.add(lastname, gridBagConstraints);
 
-        jTextField4.setText("jTextField4");
+        email.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        papaylPanel.add(jTextField4, gridBagConstraints);
+        papaylPanel.add(email, gridBagConstraints);
 
         jLabel2.setText("Middle Initial:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -630,26 +647,69 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
         confirmOrderControlPanel.setLayout(new java.awt.GridBagLayout());
 
-        jToggleButton1.setText("Become Member");
-        confirmOrderControlPanel.add(jToggleButton1, new java.awt.GridBagConstraints());
-
         jButton1.setText("Confirm Checkout");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         confirmOrderControlPanel.add(jButton1, gridBagConstraints);
 
         jButton2.setText("Cancel");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         confirmOrderControlPanel.add(jButton2, gridBagConstraints);
 
+        toggleMemberJoinBtn.setText("Become Member");
+        toggleMemberJoinBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toggleMemberJoinBtnActionPerformed(evt);
+            }
+        });
+
         jLabel1.setText("Cost $19.95 per year");
+
+        javax.swing.GroupLayout joinMembershipPanelLayout = new javax.swing.GroupLayout(joinMembershipPanel);
+        joinMembershipPanel.setLayout(joinMembershipPanelLayout);
+        joinMembershipPanelLayout.setHorizontalGroup(
+            joinMembershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 247, Short.MAX_VALUE)
+            .addGroup(joinMembershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(joinMembershipPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(toggleMemberJoinBtn)
+                    .addGap(3, 3, 3)
+                    .addComponent(jLabel1)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        joinMembershipPanelLayout.setVerticalGroup(
+            joinMembershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 32, Short.MAX_VALUE)
+            .addGroup(joinMembershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(joinMembershipPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(joinMembershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(toggleMemberJoinBtn)
+                        .addGroup(joinMembershipPanelLayout.createSequentialGroup()
+                            .addGap(8, 8, 8)
+                            .addComponent(jLabel1)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        confirmOrderControlPanel.add(jLabel1, gridBagConstraints);
+        gridBagConstraints.gridwidth = 2;
+        confirmOrderControlPanel.add(joinMembershipPanel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -659,7 +719,55 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
         contentView.add(checkoutPanel, "card5");
 
-        getContentPane().add(contentView, java.awt.BorderLayout.CENTER);
+        AdminPanel.setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        AdminPanel.add(userIDSearchField, gridBagConstraints);
+
+        searchUserHistory.setText("See History");
+        searchUserHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchUserHistoryActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        AdminPanel.add(searchUserHistory, gridBagConstraints);
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(800, 800));
+
+        UserHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(UserHistoryTable);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        AdminPanel.add(jScrollPane1, gridBagConstraints);
+
+        goBackToStoreBtn.setText("Go Back");
+        goBackToStoreBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goBackToStoreBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        AdminPanel.add(goBackToStoreBtn, gridBagConstraints);
+
+        contentView.add(AdminPanel, "card6");
+
+        getContentPane().add(contentView);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -677,13 +785,20 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             UserNameField.setText("");
             PasswordField.setText("");
             
-            UserNameLbl.setText(login.getUserName());
+            UserNameLbl.setText("Welcome " + login.getUserName());
             cardLayout = (CardLayout)contentView.getLayout();
             cardLayout.show(contentView, "2");
             
-            //repaint();
-            //revalidate();
-            //pack();
+            if(login.getAdminRights())
+            {
+                AdminPanelBtn.setVisible(true);
+                serviceLocator.registerService("AdminPanel", new AdminPanel(UserHistoryTable, searchUserHistory, userIDSearchField));
+            }
+            
+            repaint();
+            revalidate();
+            
+            
 
         }
         else
@@ -748,8 +863,12 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         
         //reset product preview view
         productPreviewController.reset();
+                
         //set the previously clicked product reference inside the shopping cart class to null.
         shoppingCart.setPreviewProduct(null);
+        
+        cartListPanel.repaint();
+        
         
     }//GEN-LAST:event_cancelAddToCartBtnActionPerformed
 
@@ -787,54 +906,128 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
         shoppingCart.reset();
         productPreviewController.reset();
-        cartListPanel.repaint();
-        //repaint();
+        cartListPanel.removeAll();
+        repaint();
     }//GEN-LAST:event_clearCartBtnActionPerformed
 
     private void checkOutCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkOutCartBtnActionPerformed
+        
+        CheckoutCartController checkoutCartController = (CheckoutCartController)serviceLocator.getService("CheckoutCartController");
+        
+        //JPanel jPanel = new JPanel();
+
+        
         cardLayout = (CardLayout)contentView.getLayout();
         cardLayout.show(contentView, "4");
+                
+        checkoutCartController.buildCheckOutList();
+        revalidate();
+        repaint();
+
+
+    
+        
     }//GEN-LAST:event_checkOutCartBtnActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        cardLayout = (CardLayout)contentView.getLayout();
+        cardLayout.show(contentView, "2");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void toggleMemberJoinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleMemberJoinBtnActionPerformed
+        JToggleButton memberToggleButton = (JToggleButton)evt.getSource();
+        CheckoutCartController checkoutCartController = (CheckoutCartController)serviceLocator.getService("CheckoutCartController");
+        if(memberToggleButton.isSelected())
+        {
+            System.out.println("Button Toggled on");
+            checkoutCartController.addMembershipFee();
+            repaint();
+            revalidate();
+            
+        }
+        else
+        {
+            System.out.println("Button Toggled off");
+            checkoutCartController.removeMembershipFee();
+            repaint();
+            revalidate();
+        }
+    }//GEN-LAST:event_toggleMemberJoinBtnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        CheckoutCartController checkoutCartController = (CheckoutCartController)serviceLocator.getService("CheckoutCartController");
+        checkoutCartController.checkOutOrder();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void searchUserHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUserHistoryActionPerformed
+        
+        AdminPanel adminPanel = (AdminPanel)serviceLocator.getService("AdminPanel");
+        
+        adminPanel.getUserHistory();
+
+        
+        
+        
+    }//GEN-LAST:event_searchUserHistoryActionPerformed
+
+    private void AdminPanelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminPanelBtnActionPerformed
+        cardLayout = (CardLayout)contentView.getLayout();
+        cardLayout.show(contentView, "5");
+    }//GEN-LAST:event_AdminPanelBtnActionPerformed
+
+    private void goBackToStoreBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBackToStoreBtnActionPerformed
+        cardLayout = (CardLayout)contentView.getLayout();
+        cardLayout.show(contentView, "2");
+    }//GEN-LAST:event_goBackToStoreBtnActionPerformed
+
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AdminPanel;
+    private javax.swing.JButton AdminPanelBtn;
     private javax.swing.JLabel ItemPreviewImage;
     private javax.swing.JPasswordField PasswordField;
+    private javax.swing.JTable UserHistoryTable;
     private javax.swing.JTextField UserNameField;
     private javax.swing.JLabel UserNameLbl;
     private javax.swing.JButton addToCartBtn;
     private javax.swing.JButton cancelAddToCartBtn;
     private javax.swing.JPanel cartControlPanel;
     private javax.swing.JPanel cartListPanel;
-    private javax.swing.JPanel cartListPanel1;
     private javax.swing.JTextField cartQuantityToAddField;
     private javax.swing.JScrollPane cartScrollPanel;
     private javax.swing.JPanel categoryControlPanel;
     private javax.swing.JButton checkOutCartBtn;
     private javax.swing.JScrollPane checkOutCartPanel;
+    private javax.swing.JPanel checkoutCartList;
     private javax.swing.JPanel checkoutPanel;
     private javax.swing.JButton clearCartBtn;
     private javax.swing.JPanel confirmOrderControlPanel;
     private javax.swing.JPanel contentView;
     private javax.swing.JLabel currentStockLbl;
     private javax.swing.JLabel currentStockText;
+    private javax.swing.JTextField email;
+    private javax.swing.JTextField firstname;
+    private javax.swing.JButton goBackToStoreBtn;
+
     private javax.swing.JLabel incorrectLoginLabel;
     private javax.swing.JLabel itemNameLbl;
     private javax.swing.JLabel itemPriceLbl;
     private javax.swing.JLabel itemPriceText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel joinMembershipPanel;
+    private javax.swing.JTextField lastname;
     private javax.swing.JButton loginBtn;
     private javax.swing.JPanel loginPanel;
+    private javax.swing.JTextField middleinitial;
     private javax.swing.JPanel paintPanel;
     private javax.swing.JPanel papaylPanel;
     private javax.swing.JLabel passwordLbl;
@@ -852,11 +1045,14 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     private javax.swing.JLabel registerPasswordLbl;
     private javax.swing.JPasswordField registerSecondConfirmPassword;
     private javax.swing.JLabel registerUsernameLbl;
+    private javax.swing.JButton searchUserHistory;
     private javax.swing.JLabel shoppingCartLbl;
     private javax.swing.JPanel shoppingCartPaintPanel;
     private javax.swing.JButton storeBtn;
     private javax.swing.JPanel storePanel;
+    private javax.swing.JToggleButton toggleMemberJoinBtn;
     private javax.swing.JLabel uberStockNameLbl;
+    private javax.swing.JTextField userIDSearchField;
     private javax.swing.JLabel usernameLbl;
     // End of variables declaration//GEN-END:variables
 }
