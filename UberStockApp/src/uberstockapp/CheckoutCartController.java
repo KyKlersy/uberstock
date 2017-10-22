@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * this class handles the checkout panel and all related operations that occur when
+ * the user clicks to checkout their cart.
  */
 package uberstockapp;
 
@@ -67,7 +66,9 @@ public class CheckoutCartController implements Resetable{
 
     }
     
-    
+    /**
+     * builds the checkout control
+     */
     public void buildCheckOutList()
     {
         checkoutListPanel.removeAll();
@@ -185,6 +186,12 @@ public class CheckoutCartController implements Resetable{
         
     }
     
+    /**
+     * adds the product to the history table in the database.
+     * @param product
+     * @param user
+     * @param quantityInCart 
+     */
     private void addToHistory(Product product, UserAbstractBase user, int quantityInCart)
     {
         String insertProductHistory;
@@ -199,6 +206,9 @@ public class CheckoutCartController implements Resetable{
         
     }
     
+    /**
+     * builds the panel section that shows the users uclub rewards.
+     */
     private void buildUClubRewardPanel()
     {
         calculateUClubReward();
@@ -212,6 +222,9 @@ public class CheckoutCartController implements Resetable{
         checkoutListPanel.add(uclubRewardPanel);
     }
     
+    /**
+     * builds the panel section that shows the user is joining as a member.
+     */
     private void buildJoinMembershipPanel()
     {
         memberFeePanel = new JPanel();
@@ -222,6 +235,9 @@ public class CheckoutCartController implements Resetable{
         checkoutListPanel.add(memberFeePanel);
     }
     
+    /**
+     *  builds the subtotal section that shows the subtotal for the products in the list.
+     */
     private void buildSubtotalPanel()
     {
         LayoutManager lm = new GridBagLayout();
@@ -242,7 +258,9 @@ public class CheckoutCartController implements Resetable{
         checkoutListPanel.add(subtotalJPanel);
     }
     
-    
+    /**
+     * builds the tax panel section that shows the tax for this sale.
+     */
     private void buildTaxPanel()
     {
         LayoutManager lm = new GridBagLayout();
@@ -263,6 +281,9 @@ public class CheckoutCartController implements Resetable{
         checkoutListPanel.add(taxJPanel);
     }
     
+    /**
+     * builds the final total panel that shows the subtotal + tax, final sale amount.
+     */
     private void buildFinalTotalPanel()
     {
         /* Final total node */
@@ -289,6 +310,10 @@ public class CheckoutCartController implements Resetable{
         return (this.subtotal + this.tax);
     }
     
+    /**
+     * handles the final checkout process of adding the paypal user info if not already exists
+     * along with updating the products new stock values.
+     */
     public void checkOutOrder()
     {
         //sqlController sql = (sqlController)ServiceLocator.getServiceLocatorInstance().getService("sqlController");
@@ -341,6 +366,9 @@ public class CheckoutCartController implements Resetable{
         
     }
     
+    /**
+     * used by the jtoggle button to add the membership fee to the checkout cart list.
+     */
     public void addMembershipFee()
     {
         checkoutListPanel.remove(subtotalJPanel);
@@ -364,6 +392,9 @@ public class CheckoutCartController implements Resetable{
 
     }
     
+    /**
+     * used by the jtoggle button to remove the membership fee from the checkout cart list.
+     */
     public void removeMembershipFee()
     {
         checkoutListPanel.remove(memberFeePanel);
@@ -381,6 +412,10 @@ public class CheckoutCartController implements Resetable{
         
     }
 
+    /**
+     * Interface used to reset this forms controls.
+     * 
+     */
     @Override
     public void reset() {
         
