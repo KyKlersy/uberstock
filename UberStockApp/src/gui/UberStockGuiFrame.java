@@ -51,19 +51,13 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         contentView.add(AdminPanel,"5");
 
         incorrectLoginLabel.setVisible(false);
+        paypalErrorLbl.setVisible(false);
 
-       
-        //Dimension screenSize = getToolkit().getScreenSize();
-        //add(contentView);
         cardLayout.show(contentView, "1");
-        //pack();
-        
-        //setResizable(false);
-        //setSize(screenSize.width,screenSize.height);
+
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         setVisible(true);
-        
-        
+ 
     }
 
     /**
@@ -128,6 +122,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         checkoutCartList = new javax.swing.JPanel();
         papaylPanel = new javax.swing.JPanel();
         firstname = new javax.swing.JTextField();
+        paypalErrorLbl = new javax.swing.JLabel();
         middleinitial = new javax.swing.JTextField();
         lastname = new javax.swing.JTextField();
         email = new javax.swing.JTextField();
@@ -599,49 +594,57 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         firstname.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         papaylPanel.add(firstname, gridBagConstraints);
+
+        paypalErrorLbl.setForeground(new java.awt.Color(199, 32, 44));
+        paypalErrorLbl.setText("Error Fields can't be empty");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        papaylPanel.add(paypalErrorLbl, gridBagConstraints);
 
         middleinitial.setPreferredSize(new java.awt.Dimension(60, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         papaylPanel.add(middleinitial, gridBagConstraints);
 
         lastname.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         papaylPanel.add(lastname, gridBagConstraints);
 
         email.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         papaylPanel.add(email, gridBagConstraints);
 
         jLabel2.setText("Middle Initial:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         papaylPanel.add(jLabel2, gridBagConstraints);
 
         jLabel3.setText("First Name:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         papaylPanel.add(jLabel3, gridBagConstraints);
 
         jLabel4.setText("Last Name:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         papaylPanel.add(jLabel4, gridBagConstraints);
 
         jLabel5.setText("Email Address:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         papaylPanel.add(jLabel5, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -775,14 +778,16 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * login event handler, handles logging in user and checking 
+     * @param evt 
+     */
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
         
         Login login = (Login)serviceLocator.getService("Login");
         login.setLoginUserName(UserNameField.getText());
         login.setLoginPassword(String.valueOf(PasswordField.getPassword()));
-        
-        //System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
-        
+
         if(login.tryUserLogin())
         {
             UserNameField.setText("");
@@ -964,15 +969,27 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         CheckoutCartController checkoutCartController = (CheckoutCartController)serviceLocator.getService("CheckoutCartController");
         ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
-        checkoutCartController.checkOutOrder();
-        checkoutCartController.reset();
-        shoppingCart.clearList();
-        cartListPanel.removeAll();
-
-        repaint();
         
-        cardLayout = (CardLayout)contentView.getLayout();
-        cardLayout.show(contentView, "2");
+        if(!"".equals(firstname.getText()) && !"".equals(middleinitial.getText()) && !"".equals(lastname.getText()) && !"".equals(email.getText()))
+        {
+            checkoutCartController.checkOutOrder();
+            checkoutCartController.reset();
+            shoppingCart.clearList();
+            cartListPanel.removeAll();
+
+            repaint();
+
+            cardLayout = (CardLayout)contentView.getLayout();
+            cardLayout.show(contentView, "2");
+        }
+        else
+        {
+            paypalErrorLbl.setVisible(true);
+            
+            
+        }
+        
+
         
 
         
@@ -1062,6 +1079,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     private javax.swing.JPanel paintPanel;
     private javax.swing.JPanel papaylPanel;
     private javax.swing.JLabel passwordLbl;
+    private javax.swing.JLabel paypalErrorLbl;
     private javax.swing.JPanel previewItemPanel;
     private javax.swing.JPanel productBtnGrid;
     private javax.swing.JScrollPane productScrollPanel;
