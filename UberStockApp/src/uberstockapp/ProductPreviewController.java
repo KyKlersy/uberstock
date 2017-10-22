@@ -42,7 +42,10 @@ public class ProductPreviewController implements Resetable{
         this.itemImage.setIcon(imageIcon);
         this.itemName.setText(name);
         this.itemPrice.setText(price);
-        this.itemStock.setText(stock);
+        if (Integer.parseInt(stock) == 0)
+            this.itemStock.setText("Not Available");
+        else
+            this.itemStock.setText(stock);
         
     }
     
