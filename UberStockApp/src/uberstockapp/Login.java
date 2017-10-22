@@ -12,7 +12,7 @@ import uberstockapp.database.sqlController;
 
 /**
  *
- * @author Kyle
+ * @author Kyle and Tri
  */
 public class Login implements SQL_Interface{
     

@@ -11,7 +11,7 @@ import uberstockapp.database.sqlController;
 
 /**
  *
- * @author Kyle
+ * @author Kyle and Tri
  */
 public class CategoryManager implements SQL_Interface{
 
