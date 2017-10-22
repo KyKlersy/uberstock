@@ -1007,11 +1007,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     private javax.swing.JTextField email;
     private javax.swing.JTextField firstname;
     private javax.swing.JButton goBackToStoreBtn;
-<<<<<<< HEAD
-=======
-
     private javax.swing.JLabel incorrectLoginLabel;
->>>>>>> login
     private javax.swing.JLabel itemNameLbl;
     private javax.swing.JLabel itemPriceLbl;
     private javax.swing.JLabel itemPriceText;
