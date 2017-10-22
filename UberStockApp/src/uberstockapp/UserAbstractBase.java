@@ -7,6 +7,8 @@ import uberstockapp.database.sqlController;
 
 /**
  *
+ * This is abstract class for user 
+ * including user and administration
  * @author carlo
  */
 public abstract class UserAbstractBase{
@@ -21,7 +23,14 @@ public abstract class UserAbstractBase{
     private final sqlController sql;
     
     
-    
+    /**
+     * Constructor to set up user information
+     * @param username
+     * @param password
+     * @param uuid
+     * @param membership
+     * @param allowAdmin 
+     */
     public UserAbstractBase(String username, String password, int uuid, int membership, boolean allowAdmin)
     {
         setUsername(username);
@@ -106,7 +115,9 @@ public abstract class UserAbstractBase{
         return this.membershipName;
     }
 
-
+    /**
+     * Update user information in database
+     */
     public void updateUser()
     {
         String sqlUpdateCommand = "UPDATE USERS SET Username = '" + getUsername() + "',Password = '"+ getPassword() + "',Membership = " + getMembership() + " Where UserID = "+ getUuid();

@@ -18,7 +18,7 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author Kyle
+ * @author Kyle and Tri
  */
 public class cardClassTest {
     

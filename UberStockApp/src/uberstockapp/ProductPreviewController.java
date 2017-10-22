@@ -11,7 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**
- *
+ * Handle the product information GUI 
+ * when user select specific product
  * @author Kyle and Tri
  */
 public class ProductPreviewController implements Resetable{
@@ -26,7 +27,15 @@ public class ProductPreviewController implements Resetable{
     {
         setPreviewFrame(itemImage, itemName, itemPrice, itemStock, itemQuantity);
     }
-
+    
+    /**
+     * Constructor set up all members
+     * @param itemImage
+     * @param itemName
+     * @param itemPrice
+     * @param itemStock
+     * @param itemQuantity 
+     */
     public final void setPreviewFrame(JLabel itemImage, JLabel itemName, JLabel itemPrice, JLabel itemStock, JTextField itemQuantity)
     {
         this.itemImage = itemImage;
@@ -36,7 +45,13 @@ public class ProductPreviewController implements Resetable{
         this.itemQuantity = itemQuantity;
         
     }
-    
+    /**
+     * update when user select product
+     * @param imageIcon
+     * @param name
+     * @param price
+     * @param stock 
+     */
     public final void setPreviewFrameView(Icon imageIcon, String name, String price, String stock)
     {
         this.itemImage.setIcon(imageIcon);
@@ -90,7 +105,9 @@ public class ProductPreviewController implements Resetable{
     public void setItemQuantity(JTextField itemQuantity) {
         this.itemQuantity = itemQuantity;
     }
-
+    /**
+     * another interface for me to use this form control
+     */
     @Override
     public void reset() {
         itemImage.setIcon(null);

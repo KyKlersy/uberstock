@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import uberstockapp.database.sqlController;
 
 /**
- *
+ * Top class to build the database
  * @author Kyle
  */
 public class ProductManager implements SQL_Interface
@@ -25,6 +25,9 @@ public class ProductManager implements SQL_Interface
         buildProductList();
     }
     
+    /**
+     * build the product information in database
+     */
     public final void buildProductList()
     {
         productList = new ArrayList<>();
@@ -64,7 +67,10 @@ public class ProductManager implements SQL_Interface
         });
         
     }
-
+    /**
+     * SQl_Interface that allows you to call sql commands through the interface.
+     * @param commandType 
+     */
     @Override
     public void executeSQL(String commandType) 
     {

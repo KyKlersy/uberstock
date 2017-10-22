@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 
 /**
  *
+ * Handle the product GUI and features in the stock
  * @author Kyle and Tri
  */
 public class ProductViewController {
@@ -31,6 +32,11 @@ public class ProductViewController {
         productButtonMap = new HashMap<>();
     }
     
+    /**
+     * Create product categories and books for each category
+     * @param categoryID
+     * @param btnPanel 
+     */
     public final void buildViewPanel(int categoryID, JPanel btnPanel)
     {
         ProductManager productManager = (ProductManager)serviceLocator.getService("ProductManager");
@@ -49,6 +55,7 @@ public class ProductViewController {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.insets = new Insets(5, 5, 5, 5); 
         
+        //build category GUI
         for(Product product : categoryMatchedProduct)
         {
             
@@ -67,6 +74,7 @@ public class ProductViewController {
             button.setPreferredSize(new Dimension(250, 250));
             button.setMargin(new Insets(5, 5, 5, 5));
 
+            //Start build books for category button clicked
             button.addActionListener((ae) -> {
                 ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
                 ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");

@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 
 /**
  *
+ * Represent for ShoppingCart
+ * Handle ShoppingCart GUI and its features
  * @author Kyle and Tri
  */
 public class ShoppingCart implements Resetable{
@@ -40,6 +42,13 @@ public class ShoppingCart implements Resetable{
         this.previewProduct = product;
     }
     
+    /**
+     * Create a item panel to show the item added
+     * Also include remove item panel method
+     * @param quantity
+     * @param cartPanel
+     * @return 
+     */
     public boolean addCartItem(int quantity, JPanel cartPanel)
     {
         ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
@@ -68,6 +77,7 @@ public class ShoppingCart implements Resetable{
                 panelGroup.add(quantityJLabel);
                 panelGroup.add(deleteItemButton);
 
+                //Perfrom when deleteItemButton is clicked
                 deleteItemButton.addActionListener((ae) -> {
                     Product originalDatabaseProduct = mapDeleteBtn.get((JButton)ae.getSource());
                     Product modifiedDatabaseProduct = panelDeleteBtnMap.get(panelGroup);
@@ -150,7 +160,9 @@ public class ShoppingCart implements Resetable{
         
         return productList;
     }
-
+    /**
+     * Perform shopping cart clear the shopping list
+     */
     public void clearList()
     {        
         cartList.clear();        
