@@ -204,7 +204,9 @@ public class CheckoutCartController implements Resetable{
         calculateUClubReward();
         uclubRewardPanel = new JPanel();
         JLabel uClubReward = new JLabel("UClub Rewards ");
-        JLabel uclubRewardAmountLabel = new JLabel(Float.toString(uclubreward));
+        java.text.DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        JLabel uclubRewardAmountLabel = new JLabel(df.format(uclubreward));
         uclubRewardPanel.add(uClubReward);
         uclubRewardPanel.add(uclubRewardAmountLabel);
         checkoutListPanel.add(uclubRewardPanel);
