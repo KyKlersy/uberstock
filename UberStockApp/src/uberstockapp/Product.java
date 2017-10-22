@@ -2,6 +2,7 @@ package uberstockapp;
 
 import interfaces.SQL_Interface;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import uberstockapp.database.sqlController;
 
 /**
