@@ -904,13 +904,7 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         catch (NumberFormatException numberFormatException)
         {
             cartQuantityToAddField.setText("NaN");
-        }
-        
-        
-
-
-            
-        
+        }     
     }//GEN-LAST:event_addToCartBtnActionPerformed
 
     private void clearCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearCartBtnActionPerformed
