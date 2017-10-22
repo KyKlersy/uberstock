@@ -6,6 +6,7 @@
 package uberstockapp;
 
 
+import Interfaces.Resetable;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -20,7 +21,7 @@ import uberstockapp.database.sqlController;
  *
  * @author Kyle
  */
-public class AdminPanel {
+public class AdminPanel implements Resetable{
 
     ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     sqlController sql = (sqlController)serviceLocator.getService("sqlController");
@@ -89,6 +90,12 @@ public class AdminPanel {
 
         return new DefaultTableModel(data, columnNames);
 
+    }
+
+    @Override
+    public void reset() {
+        dataTable.removeAll();
+        userIDField.setText("");
     }
         
         

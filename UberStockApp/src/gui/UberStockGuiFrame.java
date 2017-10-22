@@ -828,6 +828,13 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private void storeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_storeBtnActionPerformed
+        ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
+        ProductPreviewController previewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
+        shoppingCart.reset();
+        shoppingCart.clearList();
+        previewController.reset();
+        cartListPanel.removeAll();
+        
         cardLayout = (CardLayout)contentView.getLayout();
         cardLayout.show(contentView, "1");
         UserNameLbl.setText("");
@@ -1008,8 +1015,11 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_AdminPanelBtnActionPerformed
 
     private void goBackToStoreBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBackToStoreBtnActionPerformed
+        AdminPanel adminPanel = (AdminPanel)serviceLocator.getService("AdminPanel");
+        adminPanel.reset();
         cardLayout = (CardLayout)contentView.getLayout();
         cardLayout.show(contentView, "2");
+        
     }//GEN-LAST:event_goBackToStoreBtnActionPerformed
 
     private void PasswordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PasswordFieldKeyPressed
