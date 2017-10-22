@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * category view controller handles building the control panel to switch between product categories.
  */
 package uberstockapp;
 
@@ -35,6 +33,9 @@ public class CategoryViewController {
         this.productBtnGrid = productBtnGrid;
     }
     
+    /**
+     * builds the control panel on the left side with buttons for selecting categories
+     */
     public void buildCategoryView()
     {
         int row = 0;

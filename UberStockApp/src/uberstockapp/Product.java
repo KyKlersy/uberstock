@@ -6,7 +6,8 @@ import java.text.DecimalFormat;
 import uberstockapp.database.sqlController;
 
 /**
- *
+ * 
+ * This class is used as a data class for storing each product result returned from the database.
  * @author tri.le
  */
 public class Product implements SQL_Interface{
@@ -39,6 +40,11 @@ public class Product implements SQL_Interface{
         this.quantity = quantity;
     }
     
+    /**
+     * used for checking if there exists enough stock before user is allowed to add it to the cart.
+     * @param quantity
+     * @return 
+     */
     public boolean enoughStock(int quantity)
     {
         if(this.quantity >= quantity)
@@ -93,6 +99,10 @@ public class Product implements SQL_Interface{
         this.imageURI = imageURI;
     }
 
+    /**
+     * SQL_interface that allows you to call sql commands through the interface.
+     * @param commandType 
+     */
     @Override
     public void executeSQL(String commandType) {
         String sqlUpdateCommand;

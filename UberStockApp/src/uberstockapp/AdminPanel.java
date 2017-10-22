@@ -1,8 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+ * Admin panel class handles the operation of search for user purchase history
+ * and displaying it in a table.
+ * 
+ * 
+*/
 package uberstockapp;
 
 
@@ -26,9 +27,9 @@ public class AdminPanel implements Resetable{
     ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     sqlController sql = (sqlController)serviceLocator.getService("sqlController");
 
-    private JTable dataTable;
-    private JButton searchButton;
-    private JTextField userIDField;
+    private final JTable dataTable;
+    private final JButton searchButton;
+    private final JTextField userIDField;
     
     public AdminPanel(JTable dataTable, JButton searchButton, JTextField userIDField) {
         this.dataTable = dataTable;

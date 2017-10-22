@@ -818,6 +818,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         }        
     }//GEN-LAST:event_loginBtnActionPerformed
 
+    /**
+     * logout action event
+     * @param evt 
+     */
     private void storeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_storeBtnActionPerformed
         ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
         ProductPreviewController previewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
@@ -832,6 +836,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         revalidate();
     }//GEN-LAST:event_storeBtnActionPerformed
 
+    /**
+     * Register button clicked switch view to register new user.
+     * @param evt 
+     */
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
  
         cardLayout = (CardLayout)contentView.getLayout();
@@ -839,6 +847,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         revalidate();
     }//GEN-LAST:event_registerBtnActionPerformed
 
+    /**
+     * redirect canceled register form back to login
+     * @param evt 
+     */
     private void registerFormCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerFormCancelBtnActionPerformed
         registerFormUsernameField.setText("");
         registerConfirmPassword.setText("");
@@ -849,6 +861,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         revalidate();
     }//GEN-LAST:event_registerFormCancelBtnActionPerformed
 
+    /**
+     * handle register new user click button
+     * @param evt 
+     */
     private void registerFormRegisterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerFormRegisterBtnActionPerformed
         Login login = (Login)serviceLocator.getService("Login");
         login.setLoginUserName(registerFormUsernameField.getText());
@@ -874,7 +890,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         //System.out.println("usernamelogin: " + login.getUserName() + " password set: " + login.getPassword());
     }//GEN-LAST:event_registerFormRegisterBtnActionPerformed
 
-    
+    /**
+     * cancel adding item preview to cart
+     * @param evt 
+     */
     private void cancelAddToCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelAddToCartBtnActionPerformed
         ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
         ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
@@ -890,7 +909,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_cancelAddToCartBtnActionPerformed
 
-    
+    /**
+     * add preview item to shopping list cart
+     * @param evt 
+     */
     private void addToCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToCartBtnActionPerformed
         
         ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
@@ -913,6 +935,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         }     
     }//GEN-LAST:event_addToCartBtnActionPerformed
 
+    /**
+     * clears the shopping cart list
+     * @param evt 
+     */
     private void clearCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearCartBtnActionPerformed
         ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
         ProductPreviewController productPreviewController = (ProductPreviewController)serviceLocator.getService("ProductPreviewController");
@@ -922,6 +948,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         repaint();
     }//GEN-LAST:event_clearCartBtnActionPerformed
 
+    /**
+     * switch to checkout panel
+     * @param evt 
+     */
     private void checkOutCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkOutCartBtnActionPerformed
         
         CheckoutCartController checkoutCartController = (CheckoutCartController)serviceLocator.getService("CheckoutCartController");
@@ -941,11 +971,19 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_checkOutCartBtnActionPerformed
 
+    /**
+     * cart checkout switch back to shopping store panel
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         cardLayout = (CardLayout)contentView.getLayout();
         cardLayout.show(contentView, "2");
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Jtoggle for adding and removing user joining as member
+     * @param evt 
+     */
     private void toggleMemberJoinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleMemberJoinBtnActionPerformed
         JToggleButton memberToggleButton = (JToggleButton)evt.getSource();
         CheckoutCartController checkoutCartController = (CheckoutCartController)serviceLocator.getService("CheckoutCartController");
@@ -966,6 +1004,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_toggleMemberJoinBtnActionPerformed
 
+    /**
+     * event handler for checking out a users order
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         CheckoutCartController checkoutCartController = (CheckoutCartController)serviceLocator.getService("CheckoutCartController");
         ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
@@ -989,29 +1031,33 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             
         }
         
-
-        
-
-        
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * admin event handler for searching for user history
+     * @param evt 
+     */
     private void searchUserHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUserHistoryActionPerformed
         
         AdminPanel adminPanel = (AdminPanel)serviceLocator.getService("AdminPanel");
         
         adminPanel.getUserHistory();
 
-        
-        
-        
     }//GEN-LAST:event_searchUserHistoryActionPerformed
 
+    /**
+     * admin event handler for going back to shopping store panel
+     * @param evt 
+     */
     private void AdminPanelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminPanelBtnActionPerformed
         cardLayout = (CardLayout)contentView.getLayout();
         cardLayout.show(contentView, "5");
     }//GEN-LAST:event_AdminPanelBtnActionPerformed
 
+    /**
+     * reset and close admin panel switch to store.
+     * @param evt 
+     */
     private void goBackToStoreBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBackToStoreBtnActionPerformed
         AdminPanel adminPanel = (AdminPanel)serviceLocator.getService("AdminPanel");
         adminPanel.reset();
@@ -1020,6 +1066,10 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_goBackToStoreBtnActionPerformed
 
+    /**
+     * event handler for logging in user by pressing enter on the password field
+     * @param evt 
+     */
     private void PasswordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PasswordFieldKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)

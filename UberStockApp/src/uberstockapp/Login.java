@@ -1,11 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * this class handles the logging in of users by contacting the database and confirming the users
+ * credentials.
+ * 
  */
 package uberstockapp;
 
-import Enums.MembershipTypeEnum;
 import Interfaces.SQL_Interface;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,10 +25,14 @@ public class Login implements SQL_Interface{
     ServiceLocator serviceLocator = ServiceLocator.getServiceLocatorInstance();
     
     public Login()
-    {
+    { /* Default Constructor */
         
     }
     
+    /**
+     * function used to verify if user credentials are valid.
+     * @return 
+     */
     public boolean tryUserLogin()
     {
         
@@ -85,6 +88,10 @@ public class Login implements SQL_Interface{
        return false;
     }
     
+    /**
+     * method used to insert a new user when in the registration form.
+     * @return 
+     */
     public boolean insertNewUser()
     {
         if(!"".equals(userName) && !"".equals(password))
@@ -119,6 +126,10 @@ public class Login implements SQL_Interface{
         return allowAdmin;
     }
 
+    /**
+     * SQL_Command Interface for being able to execute sql commands from elsewhere through the interface.
+     * @param commandType 
+     */
     @Override
     public void executeSQL(String commandType)
     {
