@@ -785,6 +785,8 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             UserNameField.setText("");
             PasswordField.setText("");
             
+            incorrectLoginLabel.setVisible(false);
+            
             UserNameLbl.setText("Welcome " + login.getUserName());
             cardLayout = (CardLayout)contentView.getLayout();
             cardLayout.show(contentView, "2");
