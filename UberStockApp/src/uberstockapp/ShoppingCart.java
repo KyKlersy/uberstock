@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Kyle
+ * @author Kyle and Tri
  */
 public class ShoppingCart implements Resetable{
     
@@ -96,7 +96,11 @@ public class ShoppingCart implements Resetable{
                 /* reduce the quantity in stock for product */
                 previewProduct.reduceQuantity(quantity);
                 
-                productPreviewController.getItemStock().setText(Integer.toString(previewProduct.getQuantity()));
+                if (previewProduct.getQuantity() == 0)
+                    productPreviewController.getItemStock().setText("Not Available");
+                else
+                    productPreviewController.getItemStock().setText(Integer.toString(previewProduct.getQuantity()));
+                
                 productPreviewController.getItemQuantity().setText("");
 
                 cartPanel.add(panelGroup);
