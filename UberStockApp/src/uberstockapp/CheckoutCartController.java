@@ -5,12 +5,12 @@
  */
 package uberstockapp;
 
+import Interfaces.Resetable;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.LayoutManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,7 +22,7 @@ import uberstockapp.database.sqlController;
  *
  * @author Kyle
  */
-public class CheckoutCartController {
+public class CheckoutCartController implements Resetable{
 
     private final float TaxRate = .0825f;
     private final float UClubRewardRate = .05f;
@@ -35,10 +35,10 @@ public class CheckoutCartController {
     private JPanel taxJPanel;
     private JPanel subtotalJPanel;
 
-    private JTextField firstnameField;
-    private JTextField middleinitalField;
-    private JTextField lastnameField;
-    private JTextField emailField;
+    private final JTextField firstnameField;
+    private final JTextField middleinitalField;
+    private final JTextField lastnameField;
+    private final JTextField emailField;
     
     
     private JPanel memberFeePanel;
@@ -324,10 +324,12 @@ public class CheckoutCartController {
             e.printStackTrace();
         } 
                 
+        
         shoppingCart.getCartHashMap().entrySet().forEach((product) -> {
             product.getKey().executeSQL("Update");
         });
    
+        
     }
     
     public void addMembershipFee()
@@ -367,6 +369,18 @@ public class CheckoutCartController {
         checkoutListPanel.repaint();
         checkoutListPanel.revalidate();
         
+        
+    }
+
+    @Override
+    public void reset() {
+        
+        checkoutListPanel.removeAll();
+
+         firstnameField.setText("");
+         middleinitalField.setText("");
+         lastnameField.setText("");
+         emailField.setText("");
         
     }
     

@@ -6,7 +6,7 @@
 package uberstockapp;
 
 import Enums.MembershipTypeEnum;
-import interfaces.SQL_Interface;
+import Interfaces.SQL_Interface;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import uberstockapp.database.sqlController;

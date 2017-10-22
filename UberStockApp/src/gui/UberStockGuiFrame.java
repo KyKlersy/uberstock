@@ -34,7 +34,7 @@ import uberstockapp.ShoppingCart;
 
 /**
  *
- * @author Kyle
+ * @author Kyle and Tri
  */
 public class UberStockGuiFrame extends javax.swing.JFrame {
     
@@ -213,6 +213,12 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 0);
         loginPanel.add(passwordLbl, gridBagConstraints);
+
+        PasswordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                PasswordFieldKeyPressed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -504,8 +510,6 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         shoppingCartPaintPanel.setBackground(new java.awt.Color(206, 209, 213));
 
         shoppingCartLbl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imgs/uberstockCartLogo.jpg"))); // NOI18N
-        shoppingCartLbl.setMinimumSize(new java.awt.Dimension(35, 35));
-        shoppingCartLbl.setPreferredSize(new java.awt.Dimension(35, 35));
 
         cartTextLbl.setForeground(new java.awt.Color(199, 32, 44));
         cartTextLbl.setText("Shopping Cart");
@@ -516,16 +520,16 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
             shoppingCartPaintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(shoppingCartPaintPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(shoppingCartLbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(shoppingCartLbl)
                 .addGap(18, 18, 18)
                 .addComponent(cartTextLbl)
-                .addContainerGap(265, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         shoppingCartPaintPanelLayout.setVerticalGroup(
             shoppingCartPaintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(shoppingCartPaintPanelLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(shoppingCartLbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(shoppingCartLbl)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, shoppingCartPaintPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -971,7 +975,20 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         CheckoutCartController checkoutCartController = (CheckoutCartController)serviceLocator.getService("CheckoutCartController");
+        ShoppingCart shoppingCart = (ShoppingCart)serviceLocator.getService("ShoppingCart");
         checkoutCartController.checkOutOrder();
+        checkoutCartController.reset();
+        shoppingCart.clearList();
+        cartListPanel.removeAll();
+
+        repaint();
+        
+        cardLayout = (CardLayout)contentView.getLayout();
+        cardLayout.show(contentView, "2");
+        
+
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void searchUserHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUserHistoryActionPerformed
@@ -994,6 +1011,14 @@ public class UberStockGuiFrame extends javax.swing.JFrame {
         cardLayout = (CardLayout)contentView.getLayout();
         cardLayout.show(contentView, "2");
     }//GEN-LAST:event_goBackToStoreBtnActionPerformed
+
+    private void PasswordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PasswordFieldKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
+        {
+            loginBtn.doClick();
+        }
+    }//GEN-LAST:event_PasswordFieldKeyPressed
 
     
     
