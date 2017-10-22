@@ -55,10 +55,10 @@ public class UberStockApp {
         /* time for testing purposes on my end.                              */
         /*********************************************************************/
             buildDataBaseTables bdt = new buildDataBaseTables();
-            if(!bdt.databaseExists())
-            {
+            //if(!bdt.databaseExists())
+            //{
                 bdt.buildTables();
-            }
+            //}
             
         /*End block*/
         
